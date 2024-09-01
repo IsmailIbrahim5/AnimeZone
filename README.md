@@ -26,10 +26,9 @@ I tried to focus less on animation and innovative UI this time. Instead I would 
 I've tried to build an animated dark mode system that would work using riverpod generators to provide all of the UI with different themes.
 I've came to realize later that using the built in `ThemeData` in `MaterialApp` and switching would be much easier and would probably achieve the same result but it was fun experience to learn how to make it from scratch, also it would be useful if the app has variety of colors and more than two themes.
 
-# What did I learn new in this app
-
 ![](https://github.com/IsmailIbrahim5/AnimeZone/blob/main/readme_resources/darkmode.gif)
 
+# What did I learn new in this app
 
 ## [Riverpod Clean Architecture](https://codewithandrea.com/articles/flutter-app-architecture-riverpod-introduction/)
 I tried to learn about different types of design patterns and code architecture, and so I learned about MVVM, MVC, MVP and clean architecture.
