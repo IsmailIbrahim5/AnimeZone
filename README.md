@@ -18,7 +18,7 @@ Exploring more about Flutter and how I can make better code in it.
 4. Organize your favorites with personalized collections and keep track of what you want to watch or read next.
 
 
-#What did I create new in this app?
+# What did I create new in this app?
 I tried to focus less on animation and innovative UI this time. Instead I would direct my focus to learn more about clean code, design patterns and architecture and how I cant make my code more scalable and efficient.
 
 
