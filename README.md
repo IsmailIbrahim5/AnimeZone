@@ -26,7 +26,7 @@ I tried to focus less on animation and innovative UI this time. Instead I would 
 I've tried to build an animated dark mode system that would work using riverpod generators to provide all of the UI with different themes.
 I've came to realize later that using the built in `ThemeData` in `MaterialApp` and switching would be much easier and would probably achieve the same result but it was fun experience to learn how to make it from scratch, also it would be useful if the app has variety of colors and more than two themes.
 
-#What did I learn new in this app
+# What did I learn new in this app
 
 ![](https://github.com/IsmailIbrahim5/AnimeZone/blob/main/readme_resources/darkmode.gif)
 
