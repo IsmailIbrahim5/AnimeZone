@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "729571738343",
+    "project_id": "animezone-e023d",
+    "storage_bucket": "animezone-e023d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729571738343:android:f88f82b47498f9e4221842",
+        "android_client_info": {
+          "package_name": "com.glitch.animezone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0A2UCHHhrfq6ZVGnwE1vLnnLmZCXLLGs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
