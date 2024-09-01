@@ -7,7 +7,7 @@ Exploring more about Flutter and how I can make better code in it.
 ![](https://github.com/IsmailIbrahim5/AnimeZone/blob/main/readme_resources/Dark%20Concept%20Art.jpg)
 
 
-#Features
+# Features
 
 1. Explore a wide variety of anime and manga, latest episodes, reviews and recommendations.
 
