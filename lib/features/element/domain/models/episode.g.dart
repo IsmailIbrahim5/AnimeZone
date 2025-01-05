@@ -25,35 +25,26 @@ _$EpisodeImpl _$$EpisodeImplFromJson(Map<String, dynamic> json) =>
       forumUrl: json['forum_url'] as String?,
     );
 
-Map<String, dynamic> _$$EpisodeImplToJson(_$EpisodeImpl instance) {
-  final val = <String, dynamic>{
-    'mal_id': instance.malId,
-    'url': instance.url,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('anime_data', instance.animeData);
-  val['title'] = instance.title;
-  writeNotNull(
-      'images',
-      _$JsonConverterToJson<Map<String, dynamic>, Image>(
-          instance.image, const ImagesConverter().toJson));
-  val['title_japanese'] = instance.japaneseTitle;
-  val['title_romanji'] = instance.romanjiTitle;
-  val['duration'] = instance.duration;
-  val['aired'] = instance.aired;
-  val['score'] = instance.score;
-  val['filler'] = instance.filler;
-  val['recap'] = instance.recap;
-  val['synopsis'] = instance.synopsis;
-  val['forum_url'] = instance.forumUrl;
-  return val;
-}
+Map<String, dynamic> _$$EpisodeImplToJson(_$EpisodeImpl instance) =>
+    <String, dynamic>{
+      'mal_id': instance.malId,
+      'url': instance.url,
+      if (instance.animeData case final value?) 'anime_data': value,
+      'title': instance.title,
+      if (_$JsonConverterToJson<Map<String, dynamic>, Image>(
+              instance.image, const ImagesConverter().toJson)
+          case final value?)
+        'images': value,
+      'title_japanese': instance.japaneseTitle,
+      'title_romanji': instance.romanjiTitle,
+      'duration': instance.duration,
+      'aired': instance.aired,
+      'score': instance.score,
+      'filler': instance.filler,
+      'recap': instance.recap,
+      'synopsis': instance.synopsis,
+      'forum_url': instance.forumUrl,
+    };
 
 Value? _$JsonConverterFromJson<Json, Value>(
   Object? json,

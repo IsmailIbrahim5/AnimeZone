@@ -7,6 +7,8 @@ const APIBaseUrl = 'anime-zone-server.glitch.me';
 
 
 const CSAPIBaseUrl = 'www.googleapis.com';
+const WALLHAVENAPIBaseUrl = 'wallhaven.cc';
+
 const CSAPIKey = 'AIzaSyBgIwB0V8i14m14vd_am4djN-K63WiDmcs';
 const CSId = 'f5f414f27c8ce4697';
 

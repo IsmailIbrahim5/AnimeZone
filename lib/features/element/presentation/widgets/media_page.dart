@@ -13,6 +13,7 @@ import '../../../../core/providers/providers.dart';
 import '../../../../core/widgets/background.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/full_image_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MediaPage extends ConsumerWidget {
   final int id;
@@ -31,7 +32,7 @@ class MediaPage extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'PICTURES',
+            AppLocalizations.of(context)!.pictures,
             style: oswaldStyle.copyWith(
               color: primaryColor,
               fontWeight: FontWeight.w700,
@@ -54,7 +55,7 @@ class MediaPage extends ConsumerWidget {
                   ),
                   const SizedBox(height: 8.0,),
                   Text(
-                    "Couldn't find anything",
+                    AppLocalizations.of(context)!.error,
                     style: outfitStyle.copyWith(
                         color: theme.textColor,
                         fontWeight: FontWeight.w300
@@ -125,7 +126,7 @@ class MediaPage extends ConsumerWidget {
           if(videos!=null)
           ...[
           Text(
-            'PROMOS',
+            AppLocalizations.of(context)!.promos,
             style: oswaldStyle.copyWith(
               color: primaryColor,
               fontWeight: FontWeight.w700,
@@ -146,7 +147,7 @@ class MediaPage extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8.0,),
                     Text(
-                      "Couldn't find anything",
+                      AppLocalizations.of(context)!.error,
                       style: outfitStyle.copyWith(
                           color: theme.textColor,
                           fontWeight: FontWeight.w300
@@ -245,7 +246,7 @@ class MediaPage extends ConsumerWidget {
             height: 16.0,
           ),
           Text(
-            'MUSIC VIDEOS',
+            AppLocalizations.of(context)!.musicVideos,
             style: oswaldStyle.copyWith(
               color: primaryColor,
               fontWeight: FontWeight.w700,
@@ -266,7 +267,7 @@ class MediaPage extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8.0,),
                     Text(
-                      "Couldn't find anything",
+                      AppLocalizations.of(context)!.error,
                       style: outfitStyle.copyWith(
                         color: theme.textColor,
                         fontWeight: FontWeight.w300

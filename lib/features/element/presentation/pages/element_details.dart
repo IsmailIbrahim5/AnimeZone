@@ -32,6 +32,7 @@ import '../../domain/models/anime.dart';
 import '../widgets/characters_page.dart';
 import '../widgets/forum_page.dart';
 import '../widgets/media_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ElementDetails extends ConsumerStatefulWidget {
   final elem.Element? element;
@@ -122,15 +123,15 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                               this.page = page;
                             }),
                             tabs: [
-                              'Overview',
-                              'Reviews',
-                              if (element is Anime) 'Episodes',
-                              'Media',
-                              'Characters',
-                              'Recommendations',
-                              'Relations',
-                              'News',
-                              'Forums',
+                              AppLocalizations.of(context)!.overview,
+                              AppLocalizations.of(context)!.reviews,
+                              if (element is Anime) AppLocalizations.of(context)!.episodes,
+                              AppLocalizations.of(context)!.media,
+                              AppLocalizations.of(context)!.characters,
+                              AppLocalizations.of(context)!.recommendations,
+                              AppLocalizations.of(context)!.relations,
+                              AppLocalizations.of(context)!.news,
+                              AppLocalizations.of(context)!.forums,
                             ],
                           ),
                           CrossFadeSwitcher(
@@ -214,7 +215,7 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
 
   Widget _buildWallpaper(elem.Element element) => Builder(builder: (context) {
         final wallpaper = ref.watch(elementWallpaperProvider(
-            title: element.titles.first['title'] ?? '',
+            title: element.titles.where((element) => element['type'] == 'English',).firstOrNull?['title'] ?? '',
             id: element.malId,
             elementType: widget.elementType));
 
@@ -243,7 +244,36 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                   ),
                   placeholder: (context, url) => const LoadingWidget(),
                 ),
-                error: (error, stackTrace) => const SizedBox(),
+                error: (error, stackTrace) {
+                  final pictures = ref.watch(elementPicturesProvider(
+                      id:  element.malId,
+                      elementType: ElementType.anime));
+                  return pictures.when(data: (data) =>CachedNetworkImage(
+                    imageUrl: data.first.largeImageUrl??data.first.imageUrl??'',
+                    imageBuilder:
+                        (context, imageProvider) => Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Positioned.fill(
+                          child: Image(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          color: primaryColor.withOpacity(.75),
+                        )
+                      ],
+                    ),
+                    placeholder: (context, url) =>
+                    const LoadingWidget(
+                      color: Colors.white,
+                    ),
+                  ) , error: (error, stackTrace) => const SizedBox(),
+                    loading: () => const  LoadingWidget(),
+                  );
+
+                },
                 loading: () => const LoadingWidget(),
               ),
             ],
@@ -326,7 +356,7 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'MEMBERS',
+                                    AppLocalizations.of(context)!.members.toUpperCase(),
                                     style: montserratStyle.copyWith(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 12.0,
@@ -350,7 +380,7 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'TYPE',
+                                    AppLocalizations.of(context)!.type.toUpperCase(),
                                     style: montserratStyle.copyWith(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 12.0,
@@ -374,7 +404,7 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      'STATUS',
+                                      AppLocalizations.of(context)!.status.toUpperCase(),
                                       style: montserratStyle.copyWith(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 12.0,
@@ -405,7 +435,7 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      element is Anime ? 'EPISODES' : 'VOLUMES',
+                                      element is Anime ? AppLocalizations.of(context)!.episodes.toUpperCase() : AppLocalizations.of(context)!.volumes.toUpperCase(),
                                       style: montserratStyle.copyWith(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 12.0,
@@ -690,7 +720,7 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                           ? 1
                           : 0.0,
                       child: Text(
-                        'WATCH TRAILER',
+                        AppLocalizations.of(context)!.watchTrailer.toUpperCase(),
                         style: outfitStyle.copyWith(
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
@@ -767,7 +797,8 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                                     child: CrossFadeSwitcher(
                                       next: createCollection,
                                       child: Text(
-                                        'Add To Collection',
+                                        AppLocalizations.of(context)!.addToCollection,
+
                                         key: ValueKey(
                                             'add_collection_$createCollection'),
                                         style: outfitStyle.copyWith(
@@ -872,7 +903,8 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                                                   fillColor: primaryColor
                                                       .withOpacity(.25),
                                                   labelText:
-                                                      'Enter Collection Title',
+                                                  AppLocalizations.of(context)!.enterCollectionTitle,
+
                                                   labelStyle:
                                                       outfitStyle.copyWith(
                                                     color: primaryColor
@@ -932,7 +964,8 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                                                   margin: const EdgeInsets.only(
                                                       bottom: 24.0),
                                                   child: Text(
-                                                    'Create',
+                                                    AppLocalizations.of(context)!.create,
+
                                                     style: outfitStyle.copyWith(
                                                         color: Colors.white,
                                                         fontSize: 16.0,
@@ -1152,7 +1185,8 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                                                       width: 4.0,
                                                     ),
                                                     Text(
-                                                      'Create New Collection',
+                                                      AppLocalizations.of(context)!.createNewCollection,
+
                                                       key: const ValueKey(
                                                           'new_collection_text'),
                                                       style:

@@ -154,6 +154,8 @@ class RecentNewsProvider extends FutureProvider<NewsContainer> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin RecentNewsRef on FutureProviderRef<NewsContainer> {
   /// The parameter `filters` of this provider.
   String get filters;
@@ -309,6 +311,8 @@ class TagNewsProvider extends FutureProvider<NewsContainer> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin TagNewsRef on FutureProviderRef<NewsContainer> {
   /// The parameter `filters` of this provider.
   String get filters;
@@ -480,6 +484,8 @@ class ForumsProvider extends FutureProvider<ForumContainer> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ForumsRef on FutureProviderRef<ForumContainer> {
   /// The parameter `recent` of this provider.
   bool? get recent;
@@ -633,6 +639,8 @@ class DiscussionProvider extends FutureProvider<Discussion> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin DiscussionRef on FutureProviderRef<Discussion> {
   /// The parameter `id` of this provider.
   int get id;
@@ -651,4 +659,4 @@ class _DiscussionProviderElement extends FutureProviderElement<Discussion>
   int? get page => (origin as DiscussionProvider).page;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../config/styles/styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class BottomAppBar6 extends ConsumerStatefulWidget {
@@ -24,12 +25,7 @@ Color disabledColor = const Color(0xFFCECECE);
 class _BottomAppBarState6 extends ConsumerState<BottomAppBar6>
     with SingleTickerProviderStateMixin {
 
-  final List<Tab> tabs = [
-    Tab(primaryColor, const AssetImage('assets/icons/anime.png'), 'Anime'),
-    Tab(primaryColor, const AssetImage('assets/icons/manga.png'), 'Manga'),
-    Tab(primaryColor, const AssetImage('assets/icons/articles.png'), 'News'),
-    Tab(primaryColor, const AssetImage('assets/icons/library.png'), 'Library'),
-  ];
+  List<Tab> tabs = [];
 
   Size? screenSize;
   late final AnimationController animationController;
@@ -68,6 +64,12 @@ class _BottomAppBarState6 extends ConsumerState<BottomAppBar6>
 
   @override
   Widget build(BuildContext context) {
+    tabs = [
+      Tab(primaryColor, const AssetImage('assets/icons/anime.png'), AppLocalizations.of(context)!.anime),
+      Tab(primaryColor, const AssetImage('assets/icons/manga.png'), AppLocalizations.of(context)!.manga),
+      Tab(primaryColor, const AssetImage('assets/icons/articles.png'), AppLocalizations.of(context)!.news),
+      Tab(primaryColor, const AssetImage('assets/icons/library.png'), AppLocalizations.of(context)!.library),
+    ];
     if(screenSize == null) {
       screenSize = MediaQuery
           .of(context)

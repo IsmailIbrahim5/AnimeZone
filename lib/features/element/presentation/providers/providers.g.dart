@@ -21,6 +21,8 @@ final elementRepositoryProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef ElementRepositoryRef = AutoDisposeProviderRef<ElementRepository>;
 String _$topElementHash() => r'5eedfc6c05dbedf0a1fd95b67f8d5de598adbbbb';
 
@@ -225,6 +227,8 @@ class TopElementProvider extends FutureProvider<ElementCollection> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin TopElementRef on FutureProviderRef<ElementCollection> {
   /// The parameter `elementType` of this provider.
   ElementType get elementType;
@@ -383,6 +387,8 @@ class SeasonAnimeProvider extends AutoDisposeFutureProvider<ElementCollection> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin SeasonAnimeRef on AutoDisposeFutureProviderRef<ElementCollection> {
   /// The parameter `page` of this provider.
   int? get page;
@@ -536,6 +542,8 @@ class MangaCollectionProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin MangaCollectionRef on AutoDisposeFutureProviderRef<ElementCollection> {
   /// The parameter `collection` of this provider.
   String get collection;
@@ -710,6 +718,8 @@ class GenreElementProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GenreElementRef on AutoDisposeFutureProviderRef<ElementCollection> {
   /// The parameter `genre` of this provider.
   String get genre;
@@ -865,6 +875,8 @@ class ElementProvider extends FutureProvider<Element> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ElementRef on FutureProviderRef<Element> {
   /// The parameter `id` of this provider.
   int get id;
@@ -1010,6 +1022,8 @@ class FullElementProvider extends FutureProvider<Element> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FullElementRef on FutureProviderRef<Element> {
   /// The parameter `id` of this provider.
   int get id;
@@ -1143,6 +1157,8 @@ class RandomElementProvider extends FutureProvider<Element> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin RandomElementRef on FutureProviderRef<Element> {
   /// The parameter `elementType` of this provider.
   ElementType get elementType;
@@ -1394,6 +1410,8 @@ class ElementSearchProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ElementSearchRef on AutoDisposeFutureProviderRef<ElementCollection> {
   /// The parameter `elementType` of this provider.
   ElementType get elementType;
@@ -1478,6 +1496,8 @@ final recentEpisodesProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef RecentEpisodesRef = AutoDisposeFutureProviderRef<List<Episode>>;
 String _$elementGenresHash() => r'4e44e607abffa1659d6ddb96dcdfb2aec26fe00e';
 
@@ -1594,6 +1614,8 @@ class ElementGenresProvider extends FutureProvider<List<dynamic>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ElementGenresRef on FutureProviderRef<List<dynamic>> {
   /// The parameter `elementType` of this provider.
   ElementType get elementType;
@@ -1734,6 +1756,8 @@ class ElementPicturesProvider extends FutureProvider<List<Image>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ElementPicturesRef on FutureProviderRef<List<Image>> {
   /// The parameter `id` of this provider.
   int get id;
@@ -1868,6 +1892,8 @@ class AnimeVideosProvider extends FutureProvider<Map<String, List<Video>>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin AnimeVideosRef on FutureProviderRef<Map<String, List<Video>>> {
   /// The parameter `id` of this provider.
   int get id;
@@ -2012,6 +2038,8 @@ class ElementCharactersProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ElementCharactersRef on FutureProviderRef<List<Map<String, dynamic>>> {
   /// The parameter `id` of this provider.
   int get id;
@@ -2159,6 +2187,8 @@ class ElementReviewsProvider extends FutureProvider<List<Review>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ElementReviewsRef on FutureProviderRef<List<Review>> {
   /// The parameter `id` of this provider.
   int get id;
@@ -2309,6 +2339,8 @@ class ElementRecommendationsProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ElementRecommendationsRef
     on FutureProviderRef<List<Map<dynamic, dynamic>>> {
   /// The parameter `id` of this provider.
@@ -2460,6 +2492,8 @@ class ElementRelationsProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ElementRelationsRef on FutureProviderRef<List<Map<dynamic, dynamic>>> {
   /// The parameter `id` of this provider.
   int get id;
@@ -2607,6 +2641,8 @@ class ElementNewsProvider extends FutureProvider<List<News>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ElementNewsRef on FutureProviderRef<List<News>> {
   /// The parameter `id` of this provider.
   int get id;
@@ -2752,6 +2788,8 @@ class ElementForumProvider extends FutureProvider<List<Forum>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ElementForumRef on FutureProviderRef<List<Forum>> {
   /// The parameter `id` of this provider.
   int get id;
@@ -2891,6 +2929,8 @@ class RecentRecommendationsProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin RecentRecommendationsRef
     on FutureProviderRef<List<Map<String, dynamic>>> {
   /// The parameter `elementType` of this provider.
@@ -2907,7 +2947,7 @@ class _RecentRecommendationsProviderElement
       (origin as RecentRecommendationsProvider).elementType;
 }
 
-String _$recentReviewsHash() => r'1f1075c13dd8c9a1d2402150138088c0031324ad';
+String _$recentReviewsHash() => r'05c0a1c97e790f29b2abae95a8cef71ab1d16d6a';
 
 /// See also [recentReviews].
 @ProviderFor(recentReviews)
@@ -3022,6 +3062,8 @@ class RecentReviewsProvider extends FutureProvider<List<Review>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin RecentReviewsRef on FutureProviderRef<List<Review>> {
   /// The parameter `elementType` of this provider.
   ElementType get elementType;
@@ -3035,7 +3077,7 @@ class _RecentReviewsProviderElement extends FutureProviderElement<List<Review>>
   ElementType get elementType => (origin as RecentReviewsProvider).elementType;
 }
 
-String _$animeEpisodesHash() => r'143ffe8f8f3257e225b676cd2ed67e5b4a9a4446';
+String _$animeEpisodesHash() => r'10d1952db45f85a520580541b3a73b3a420f3caf';
 
 /// See also [animeEpisodes].
 @ProviderFor(animeEpisodes)
@@ -3150,6 +3192,8 @@ class AnimeEpisodesProvider extends FutureProvider<List<Episode>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin AnimeEpisodesRef on FutureProviderRef<List<Episode>> {
   /// The parameter `id` of this provider.
   int get id;
@@ -3163,7 +3207,7 @@ class _AnimeEpisodesProviderElement extends FutureProviderElement<List<Episode>>
   int get id => (origin as AnimeEpisodesProvider).id;
 }
 
-String _$animeThemesHash() => r'eb4b6cc27f4c79ea40cbc94a6bd897977494f86a';
+String _$animeThemesHash() => r'ec7fd68bb6cb81f442c45945076458291e759b24';
 
 /// See also [animeThemes].
 @ProviderFor(animeThemes)
@@ -3278,6 +3322,8 @@ class AnimeThemesProvider extends FutureProvider<Map<dynamic, dynamic>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin AnimeThemesRef on FutureProviderRef<Map<dynamic, dynamic>> {
   /// The parameter `id` of this provider.
   int get id;
@@ -3291,7 +3337,24 @@ class _AnimeThemesProviderElement
   int get id => (origin as AnimeThemesProvider).id;
 }
 
-String _$elementWallpaperHash() => r'f6b8647a0fb3a985668c216bdb97f947022f8e62';
+String _$currentSeasonHash() => r'f7563c59c9fd908ca5b5e4a3a06c478582c0f09e';
+
+/// See also [currentSeason].
+@ProviderFor(currentSeason)
+final currentSeasonProvider = FutureProvider<String>.internal(
+  currentSeason,
+  name: r'currentSeasonProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$currentSeasonHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef CurrentSeasonRef = FutureProviderRef<String>;
+String _$elementWallpaperHash() => r'8eb6eccea228c08f4376ca5b86e134408c02e834';
 
 /// See also [elementWallpaper].
 @ProviderFor(elementWallpaper)
@@ -3342,7 +3405,7 @@ class ElementWallpaperFamily extends Family<AsyncValue<String>> {
 }
 
 /// See also [elementWallpaper].
-class ElementWallpaperProvider extends AutoDisposeFutureProvider<String> {
+class ElementWallpaperProvider extends FutureProvider<String> {
   /// See also [elementWallpaper].
   ElementWallpaperProvider({
     required String title,
@@ -3406,7 +3469,7 @@ class ElementWallpaperProvider extends AutoDisposeFutureProvider<String> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<String> createElement() {
+  FutureProviderElement<String> createElement() {
     return _ElementWallpaperProviderElement(this);
   }
 
@@ -3429,7 +3492,9 @@ class ElementWallpaperProvider extends AutoDisposeFutureProvider<String> {
   }
 }
 
-mixin ElementWallpaperRef on AutoDisposeFutureProviderRef<String> {
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin ElementWallpaperRef on FutureProviderRef<String> {
   /// The parameter `title` of this provider.
   String get title;
 
@@ -3440,8 +3505,8 @@ mixin ElementWallpaperRef on AutoDisposeFutureProviderRef<String> {
   ElementType get elementType;
 }
 
-class _ElementWallpaperProviderElement
-    extends AutoDisposeFutureProviderElement<String> with ElementWallpaperRef {
+class _ElementWallpaperProviderElement extends FutureProviderElement<String>
+    with ElementWallpaperRef {
   _ElementWallpaperProviderElement(super.provider);
 
   @override
@@ -3453,4 +3518,4 @@ class _ElementWallpaperProviderElement
       (origin as ElementWallpaperProvider).elementType;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

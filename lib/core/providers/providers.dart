@@ -15,6 +15,19 @@ final dioProvider = Provider<Dio>((ref){
 });
 
 
+@riverpod
+class LocaleCode extends _$LocaleCode {
+  @override
+  String build() {
+    return ref.read(sharedPreferencesProvider).getString('locale')!;
+  }
+
+  void changeLocale(String locale){
+    ref.read(sharedPreferencesProvider).setString('locale', locale);
+    state = locale;
+  }
+}
+
 final sharedPreferencesProvider = Provider<SharedPreferences>(
   (ref) => throw UnimplementedError(),
 );

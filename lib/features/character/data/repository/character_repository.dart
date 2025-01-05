@@ -103,5 +103,11 @@ class CharacterRepository{
     final data = response.data ['data'] as List<dynamic>;
     return data.map((e) => e as Map<String,dynamic>).toList();
   }
+  Future<List<Map<String,dynamic>>> getCharacterVoiceActors(int id) async{
+    final dioClient = ref.read(dioProvider);
+    final response = await dioClient.getUri(CharacterAPI.getCharacterVoiceActors(id));
+    final data = response.data ['data'] as List<dynamic>;
+    return data.map((e) => e as Map<String,dynamic>).toList();
+  }
 }
 

@@ -42,8 +42,12 @@ mixin _$Episode {
   @JsonKey(name: 'forum_url')
   String? get forumUrl => throw _privateConstructorUsedError;
 
+  /// Serializes this Episode to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Episode
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $EpisodeCopyWith<Episode> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -82,6 +86,8 @@ class _$EpisodeCopyWithImpl<$Res, $Val extends Episode>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Episode
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -196,6 +202,8 @@ class __$$EpisodeImplCopyWithImpl<$Res>
       _$EpisodeImpl _value, $Res Function(_$EpisodeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Episode
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -377,7 +385,7 @@ class _$EpisodeImpl implements _Episode {
                 other.forumUrl == forumUrl));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -396,7 +404,9 @@ class _$EpisodeImpl implements _Episode {
       synopsis,
       forumUrl);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Episode
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$EpisodeImplCopyWith<_$EpisodeImpl> get copyWith =>
@@ -467,8 +477,11 @@ abstract class _Episode implements Episode {
   @override
   @JsonKey(name: 'forum_url')
   String? get forumUrl;
+
+  /// Create a copy of Episode
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EpisodeImplCopyWith<_$EpisodeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

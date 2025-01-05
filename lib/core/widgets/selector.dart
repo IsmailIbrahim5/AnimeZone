@@ -2,6 +2,7 @@ import 'package:animezone/config/styles/styles.dart';
 import 'package:animezone/core/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Selector extends ConsumerStatefulWidget {
   final List<String> values;
@@ -121,25 +122,26 @@ class _Selector2State extends ConsumerState<Selector2> {
   @override
   Widget build(BuildContext context) {
     final theme = ref.watch(applicationThemeProvider);
+    int rowLength = ref.watch(localeCodeProvider) == 'en' ? 4 : 2;
     return Column(
         children: List.generate(
-      (widget.values.length / 4).round(),
+      (widget.values.length / rowLength).round(),
       (row) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
           children: List.generate(
-            (row == (widget.values.length / 4).round() - 1
-                ? widget.values.length % 4
-                : 4),
+            (row == (widget.values.length / rowLength).round() - 1
+                ? widget.values.length % rowLength
+                : rowLength),
             (column) => Expanded(
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () => setState(() {
-                  if(selectedIndex == (row * 4) + column){
+                  if(selectedIndex == (row * rowLength) + column){
                     selectedIndex = -1;
                   }
                   else{
-                    selectedIndex = (row * 4) + column;
+                    selectedIndex = (row * rowLength) + column;
                   }
                   widget.callback?.call(selectedIndex);
                 }),
@@ -153,17 +155,17 @@ class _Selector2State extends ConsumerState<Selector2> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6.0),
                         border: Border.all(
-                            color: selectedIndex == (row * 4) + column
+                            color: selectedIndex == (row * rowLength) + column
                                 ? primaryColor
                                 : theme.hintTextColor),
-                        color: primaryColor.withOpacity( selectedIndex == (row * 4) + column
+                        color: primaryColor.withOpacity( selectedIndex == (row * rowLength) + column
                             ? 1.0
                             : 0.0)
                       ),
                       child: AnimatedScale(
                         duration: const Duration(milliseconds: 400),
                         curve: Curves.easeOutBack,
-                        scale: selectedIndex == (row * 4) + column ? 1.0 : 0.0,
+                        scale: selectedIndex == (row * rowLength) + column ? 1.0 : 0.0,
                         child: const FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Icon(
@@ -180,13 +182,13 @@ class _Selector2State extends ConsumerState<Selector2> {
                       duration: const Duration(milliseconds: 200),
                       curve: Curves.easeOutQuad,
                       style: outfitStyle.copyWith(
-                          color: selectedIndex == (row * 4) + column
+                          color: selectedIndex == (row * rowLength) + column
                               ? primaryColor
                               : theme.hintTextColor,
                         fontSize: 14.0
                       ),
                       child: Text(
-                        widget.values[(row * 4) + column],
+                        widget.values[(row * rowLength) + column],
                       ),
                     )
                   ],

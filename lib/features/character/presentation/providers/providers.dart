@@ -1,5 +1,6 @@
 import 'package:animezone/features/character/data/repository/character_repository.dart';
 import 'package:animezone/features/character/domain/models/character.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/images.dart';
@@ -46,4 +47,12 @@ Future<List<Map<String, dynamic>>> characterAnime(
       required int id
     }) {
   return ref.read(characterRepositoryProvider).getCharacterAnime(id);
+}
+
+@Riverpod(keepAlive: true)
+Future<List<Map<String, dynamic>>> characterVoiceActors(
+    Ref ref, {
+      required int id
+    }) {
+  return ref.read(characterRepositoryProvider).getCharacterVoiceActors(id);
 }

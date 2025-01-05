@@ -1,4 +1,5 @@
 import 'package:animezone/core/widgets/background.dart';
+import 'package:animezone/features/character/presentation/providers/providers.dart';
 import 'package:animezone/features/element/data/repository/element_repository.dart';
 import 'package:animezone/features/element/domain/models/anime.dart';
 import 'package:animezone/features/element/presentation/providers/providers.dart';
@@ -14,6 +15,7 @@ import '../../../../core/providers/providers.dart';
 import '../../../../core/widgets/cross_fade_switcher.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/selector.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OverviewPage extends ConsumerStatefulWidget {
   final elem.Element element;
@@ -44,7 +46,7 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'INFO',
+              AppLocalizations.of(context)!.info,
               style: oswaldStyle.copyWith(
                 color: primaryColor,
                 fontWeight: FontWeight.w700,
@@ -60,9 +62,9 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
                 Row(
                   children: [
                     SizedBox(
-                      width: screenSize.width * .225,
+                      width: screenSize.width * .285,
                       child: Text(
-                        'AIRED',
+                        AppLocalizations.of(context)!.aired,
                         style: montserratStyle.copyWith(
                           fontWeight: FontWeight.w700,
                           color: theme.textColor,
@@ -96,9 +98,9 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
                   Row(
                     children: [
                       SizedBox(
-                        width: screenSize.width * .225,
+                        width: screenSize.width * .285,
                         child: Text(
-                          'SEASON',
+                          AppLocalizations.of(context)!.season,
                           style: montserratStyle.copyWith(
                             fontWeight: FontWeight.w700,
                             color: theme.textColor,
@@ -123,9 +125,9 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
                   Row(
                     children: [
                       SizedBox(
-                        width: screenSize.width * .225,
+                        width: screenSize.width * .285,
                         child: Text(
-                          'GENRES',
+                          AppLocalizations.of(context)!.genres,
                           style: montserratStyle.copyWith(
                             fontWeight: FontWeight.w700,
                             color: theme.textColor,
@@ -155,9 +157,9 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
                 Row(
                   children: [
                     SizedBox(
-                      width: screenSize.width * .225,
+                      width: screenSize.width * .285,
                       child: Text(
-                        'RATING',
+                        AppLocalizations.of(context)!.rating,
                         style: montserratStyle.copyWith(
                           fontWeight: FontWeight.w700,
                           color: theme.textColor,
@@ -183,9 +185,9 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
                 Row(
                   children: [
                     SizedBox(
-                      width: screenSize.width * .225,
+                      width: screenSize.width * .285,
                       child: Text(
-                        widget.element is Anime ? 'SOURCE' : 'CHAPTERS',
+                        widget.element is Anime ? AppLocalizations.of(context)!.source : AppLocalizations.of(context)!.chapters,
                         style: montserratStyle.copyWith(
                           fontWeight: FontWeight.w700,
                           color: theme.textColor,
@@ -213,7 +215,7 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: screenSize.width * .225,
+                        width: screenSize.width * .285,
                         child: Text(
                           'DEMO',
                           style: montserratStyle.copyWith(
@@ -244,9 +246,9 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: screenSize.width * .225,
+                      width: screenSize.width * .285,
                       child: Text(
-                        widget.element is Anime ? 'STUDIOS' : 'AUTHORS',
+                        widget.element is Anime ? AppLocalizations.of(context)!.studios : AppLocalizations.of(context)!.authors,
                         style: montserratStyle.copyWith(
                           fontWeight: FontWeight.w700,
                           color: theme.textColor,
@@ -275,6 +277,75 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
                     ),
                   ],
                 ),
+                if(widget.element is Anime)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: screenSize.width * .285,
+                        child: Text(
+                          AppLocalizations.of(context)!.dubbedIn,
+                          style: montserratStyle.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: theme.textColor,
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Builder(
+                          builder: (context) {
+                            final characters = ref.watch(elementCharactersProvider(elementType: widget.element is Anime ? ElementType.anime : ElementType.manga , id: widget.element.malId));
+                            return characters.when(data: (data) {
+                              if(data.isNotEmpty) {
+                                final character = ref.watch(
+                                    characterVoiceActorsProvider(id: data
+                                        .first['character']['mal_id'] as int));
+                                return character.when(data: (data) {
+                                  String languages = data.map((
+                                      e) => e['language'],).toSet()
+                                      .toList()
+                                      .join(', ');
+                                  return Text(
+                                    languages,
+                                    style: montserratStyle.copyWith(
+                                      fontWeight: FontWeight.w400,
+                                      color: theme.textColor,
+                                      fontSize: 12.0,
+                                    ),
+                                  );
+                                },
+                                    error: (error, stackTrace) =>
+                                        Text(
+                                          '-',
+                                          style: montserratStyle.copyWith(
+                                            fontWeight: FontWeight.w400,
+                                            color: theme.textColor,
+                                            fontSize: 12.0,
+                                          ),
+                                        ),
+                                    loading: () => const LoadingWidget(
+                                      color: primaryColor,));
+                              }else{
+                                return const SizedBox();
+                              }
+
+                            }, error: (error, stackTrace) =>  Text(
+                              '-',
+                              style: montserratStyle.copyWith(
+                                fontWeight: FontWeight.w400,
+                                color: theme.textColor,
+                                fontSize: 12.0,
+                              ),
+                            ), loading: () => const LoadingWidget(color: primaryColor,),);
+                          }
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
               ],
             )
           ],
@@ -428,7 +499,7 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'SYNOPSIS',
+              AppLocalizations.of(context)!.synopsis,
               style: oswaldStyle.copyWith(
                 color: primaryColor,
                 fontWeight: FontWeight.w700,
@@ -457,7 +528,7 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'BACKGROUND',
+                AppLocalizations.of(context)!.background,
                 style: oswaldStyle.copyWith(
                   color: primaryColor,
                   fontWeight: FontWeight.w700,
@@ -488,7 +559,7 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'THEMES',
+                    AppLocalizations.of(context)!.themes,
                     style: oswaldStyle.copyWith(
                       color: primaryColor,
                       fontWeight: FontWeight.w700,
@@ -499,9 +570,9 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
                     height: 8.0,
                   ),
                   Selector(
-                    initialValue: 'OPENINGS',
+                    initialValue: AppLocalizations.of(context)!.openings,
                     dismissible: false,
-                    values: const ['OPENINGS', 'ENDINGS'],
+                    values:  [AppLocalizations.of(context)!.openings, AppLocalizations.of(context)!.endings],
                     callback: (index) {
                       setState(() {
                         themesIndex = index;
@@ -690,7 +761,7 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'WATCH ON',
+                    AppLocalizations.of(context)!.watchOn,
                     style: oswaldStyle.copyWith(
                       color: primaryColor,
                       fontWeight: FontWeight.w700,
@@ -768,7 +839,7 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'AVAILABLE AT',
+                    AppLocalizations.of(context)!.availableAt,
                     style: oswaldStyle.copyWith(
                       color: primaryColor,
                       fontWeight: FontWeight.w700,

@@ -25,8 +25,12 @@ mixin _$ForumContainer {
   @ForumConverter()
   List<Forum> get data => throw _privateConstructorUsedError;
 
+  /// Serializes this ForumContainer to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ForumContainer
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ForumContainerCopyWith<ForumContainer> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -52,6 +56,8 @@ class _$ForumContainerCopyWithImpl<$Res, $Val extends ForumContainer>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ForumContainer
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,6 +98,8 @@ class __$$ForumContainerImplCopyWithImpl<$Res>
       _$ForumContainerImpl _value, $Res Function(_$ForumContainerImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ForumContainer
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -149,12 +157,14 @@ class _$ForumContainerImpl implements _ForumContainer {
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, lastVisiblePage, const DeepCollectionEquality().hash(_data));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ForumContainer
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ForumContainerImplCopyWith<_$ForumContainerImpl> get copyWith =>
@@ -184,8 +194,11 @@ abstract class _ForumContainer implements ForumContainer {
   @override
   @ForumConverter()
   List<Forum> get data;
+
+  /// Create a copy of ForumContainer
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ForumContainerImplCopyWith<_$ForumContainerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -211,8 +224,12 @@ mixin _$Forum {
   @JsonKey(name: 'last_comment')
   Map<String, dynamic> get lastComment => throw _privateConstructorUsedError;
 
+  /// Serializes this Forum to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Forum
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ForumCopyWith<Forum> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -244,6 +261,8 @@ class _$ForumCopyWithImpl<$Res, $Val extends Forum>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Forum
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -331,6 +350,8 @@ class __$$ForumImplCopyWithImpl<$Res>
       _$ForumImpl _value, $Res Function(_$ForumImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Forum
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -484,7 +505,7 @@ class _$ForumImpl implements _Forum {
                 .equals(other._lastComment, _lastComment));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -499,7 +520,9 @@ class _$ForumImpl implements _Forum {
       comments,
       const DeepCollectionEquality().hash(_lastComment));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Forum
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ForumImplCopyWith<_$ForumImpl> get copyWith =>
@@ -553,8 +576,11 @@ abstract class _Forum implements Forum {
   @override
   @JsonKey(name: 'last_comment')
   Map<String, dynamic> get lastComment;
+
+  /// Create a copy of Forum
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ForumImplCopyWith<_$ForumImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

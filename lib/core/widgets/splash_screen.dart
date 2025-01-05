@@ -1,7 +1,5 @@
 import 'package:animezone/config/styles/styles.dart';
 import 'package:animezone/core/widgets/sequence_animation_builder.dart';
-import 'package:animezone/main.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/home_screen.dart';
@@ -30,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/background.jpg',
+              'assets/images/background1.jpg',
               fit: BoxFit.cover,
             ),
           ),

@@ -126,7 +126,7 @@ class _RelationsPageState extends ConsumerState<RelationsPage> {
                                     imageUrl: data.first.imageUrl!,
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) => const LoadingWidget(),
-                                  ), error: (error, stackTrace) => const Error1(), loading: () => const LoadingWidget(),),
+                                  ), error: (error, stackTrace) => const SizedBox(), loading: () => const LoadingWidget(),),
                                   Align(
                                     alignment: Alignment.bottomRight,
                                     child: Container(

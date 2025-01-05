@@ -148,6 +148,24 @@ class ElementRepository{
     }
   }
 
+  Future<String> getCurrentSeason()async{
+    final dioClient = ref.read(dioProvider);
+    final uri = ElementAPI.getCurrentSeason();
+    try {
+      final response = await dioClient.getUri(uri);
+      if (response.statusCode == HttpStatus.ok) {
+        var seasonData = List<Map<String, dynamic>>.from((response.data as Map<String, dynamic>)['data'] as List);
+        String season = List<String>.from(seasonData.first['seasons'] as List).first;
+        return'${season[0].toUpperCase()}${season.substring(1)} ${seasonData.first['year'] as int}';
+      } else {
+        throw HttpException(response.statusMessage ?? '');
+      }
+    }catch(e){
+      print(e);
+      rethrow;
+    }
+  }
+
   Future<Element> getRandomElement({required ElementType elementType}) async{
     final dioClient = ref.read(dioProvider);
     final uri = ElementAPI.getRandomElement(elementType: elementType);
@@ -274,11 +292,16 @@ class ElementRepository{
               final animeData = map['entry'] as Map<String, dynamic>;
               final episodeId = (map['episodes'] as List<dynamic>)
                   .first['mal_id'];
-              final episode = await getAnimeEpisodeById(
-                  animeData, episodeId as int);
-              // if (!cachedEpisodes.contains(episode)) cachedEpisodes.add(episode);
-              await cacheObject(object: episode , table : 'episode');
-              episodes.add(episode);
+              try {
+                final episode = await getAnimeEpisodeById(
+                    animeData, episodeId as int);
+                print(episode);
+                // if (!cachedEpisodes.contains(episode)) cachedEpisodes.add(episode);
+                await cacheObject(object: episode, table: 'episode');
+                episodes.add(episode);
+              }catch(e){
+
+              }
               break;
             } on DioException catch(e){
               if (!(e.type == DioExceptionType.badResponse &&
@@ -292,6 +315,7 @@ class ElementRepository{
               rethrow;
             }
           }
+          if(episodes.length == 5) break;
         }
         return episodes;
       } catch (e) {

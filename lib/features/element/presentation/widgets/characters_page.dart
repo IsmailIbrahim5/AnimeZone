@@ -12,6 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/styles/styles.dart';
 import '../../../../core/providers/providers.dart';
 import '../../../../core/widgets/loading_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CharactersPage extends ConsumerWidget {
   final int id;
@@ -38,7 +39,7 @@ class CharactersPage extends ConsumerWidget {
                             .toList(),
                         theme: theme,
                         screenSize: screenSize,
-                        title: 'MAIN'),
+                        title: AppLocalizations.of(context)!.main),
                     const SizedBox(
                       height: 32.0,
                     ),
@@ -50,7 +51,7 @@ class CharactersPage extends ConsumerWidget {
                             .toList(),
                         theme: theme,
                         screenSize: screenSize,
-                        title: 'SUPPORTING'),
+                        title: AppLocalizations.of(context)!.supporting),
                   ]),
             )
           : SizedBox(
@@ -65,7 +66,7 @@ class CharactersPage extends ConsumerWidget {
                     height: 8.0,
                   ),
                   Text(
-                    "Couldn't find anything",
+                      AppLocalizations.of(context)!.error,
                     style: outfitStyle.copyWith(
                         color: theme.textColor, fontWeight: FontWeight.w300),
                   ),

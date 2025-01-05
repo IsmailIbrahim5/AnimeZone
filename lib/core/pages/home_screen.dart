@@ -1,15 +1,20 @@
 
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:animezone/core/widgets/animated_value.dart';
+import 'package:animezone/core/widgets/background.dart';
+import 'package:animezone/core/widgets/notification_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:animezone/core/widgets/sequence_animation_builder.dart';
 import 'package:animezone/features/articles/presenation/pages/discussion_details.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../config/styles/styles.dart';
 import '../../features/articles/presenation/pages/article_page.dart';
@@ -22,7 +27,9 @@ import '../providers/providers.dart';
 import '../widgets/bottom_app_bar.dart';
 import '../widgets/cross_fade_switcher.dart';
 import '../widgets/icon_switcher.dart';
+import '../widgets/menu_drawer.dart';
 import '../widgets/tab_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -43,10 +50,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
 
   bool isSearchOn = false;
   bool isControlsOn = false;
+  bool isMenuOn = false;
 
-  late final AnimationController _mainController;
-
-  late final Animation<double> _mainAnimation;
   double getVal(double page, int index) =>
       ((page - index).abs() * 2).clamp(0, 1);
 
@@ -78,270 +83,154 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
     }
   }
 
-  bool permissionFail = false;
 
   void _showOverlay(){
+    final SequenceAnimationController controller = SequenceAnimationController();
+    late final OverlayEntry overlayEntry;
+    overlayEntry = OverlayEntry(builder: (context) => NotificationOverlay(overlayEntry: overlayEntry));
+    Overlay.of(context).insert(overlayEntry);
+  }
+
+  void _showContactUs(){
     final theme = ref.watch(applicationThemeProvider);
     final SequenceAnimationController controller = SequenceAnimationController();
     late final OverlayEntry overlayEntry;
     overlayEntry = OverlayEntry(builder: (context) => SequenceAnimationBuilder(
       controller: controller,
-      animations: 9,
+      animations: 6,
       repeat: false,
       endCallback: (){
         if(controller.completed) {
           overlayEntry.remove();
         }
       },
-      builder: (values, [child]) =>  Material(
-        color: primaryColor.withOpacity(values[0] * .5),
+      builder: (values, [child]) =>  GestureDetector(
+        onTap: () {
+          controller.reverse!();
+        },
+        child: Material(
+          color: primaryColor.withOpacity(values[0] * .5),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: values[0].clamp(0.00001, 1) * 3 , sigmaY: values[0].clamp(0.00001, 1) * 3),
+            child: FractionallySizedBox(
+              alignment: Alignment.center,
+              widthFactor: Curves.easeOutBack.transform(values[1])*.75,
+              heightFactor: values[1] *.3,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: theme.foregroundColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: primaryColor.withOpacity(.25),
+                        blurRadius: 24.0,
+                      )
+                    ],
+                    borderRadius: BorderRadius.circular(24.0)
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 12.0,horizontal: 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Icon(
+                      Icons.question_mark_rounded,
+                      color: primaryColor,
+                      size: Curves.easeOutBack.transform(values[2]) * 50.0,
+                    ),
+                    Transform.scale(
+                      scale:Curves.easeOutBack.transform(values[3]),
+                      child: Text(
+                        AppLocalizations.of(context)!.contactUs,
+                        style: outfitStyle.copyWith(
+                            color: theme.titleTextColor,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 18.0
+                        ),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
 
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: values[0].clamp(0.00001, 1) * 3 , sigmaY: values[0].clamp(0.00001, 1) * 3),
-          child: FractionallySizedBox(
-            alignment: Alignment.center,
-            widthFactor: Curves.easeOutBack.transform(values[1])*.75,
-            heightFactor: values[1] *.4,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: primaryColor.withOpacity(.25),
-                    blurRadius: 24.0,
-                  )
-                ],
-                borderRadius: BorderRadius.circular(24.0)
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 12.0,horizontal: 24.0),
-              child: CrossFadeSwitcher(
-                next: permissionFail,
-                child: permissionFail ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(
-                      Icons.close_rounded,
-                      color: primaryColor,
-                      size: Curves.easeOutBack.transform(values[4]) * 50.0,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
+                        const SizedBox(height: 12,),
                         Transform.scale(
-                          scale:Curves.easeOutBack.transform(values[5]),
-                          child: Text(
-                            'Permission Failed!',
-                            style: outfitStyle.copyWith(
-                                color: theme.titleTextColor,
-                                fontWeight: FontWeight.w800,
-                                fontSize: 18.0
-                            ),
+                          scale:Curves.easeOutBack.transform(values[4]),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!.emailAddress,
+                                textAlign: TextAlign.center,
+                                style: outfitStyle.copyWith(
+                                    color: theme.titleTextColor,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.0
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  final Uri _emailLaunchUri = Uri(
+                                    scheme: 'mailto',
+                                    path: 'ismaeel_ibrahem@outlook.com',
+                                  );
+                                  launchUrl(_emailLaunchUri);
+                                },
+                                child: Text(
+                                  'ismaeel_ibrahem@outlook.com',
+                                  textAlign: TextAlign.center,
+                                  style: outfitStyle.copyWith(
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 12.0,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 12,),
                         Transform.scale(
-                          scale:Curves.easeOutBack.transform(values[6]),
-                          child: Text(
-                            'You rejected the notification permission, open settings to enable it',
-                            textAlign: TextAlign.center,
-                            style: outfitStyle.copyWith(
-                                color: theme.textColor,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 12.0
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () async{
-                              await openAppSettings();
-                              NotificationSettings settings = await FirebaseMessaging
-                                  .instance.requestPermission();
-                              if (settings.authorizationStatus ==
-                                  AuthorizationStatus.authorized) {
-                                await FirebaseMessaging.instance
-                                    .subscribeToTopic(
-                                    'RecentNews');
-                                controller.reverse!();
-                            }
-                          },
-                          child: Transform.scale(
-                            scale:Curves.easeOutBack.transform(values[7]),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  gradient: const LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        primaryColor,
-                                        accentColor
-                                      ]
-                                  )
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 12.0),
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Open Settings',
-                                style: outfitStyle.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w700
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            controller.reverse!();
-                          },
-                          child: Transform.scale(
-                            scale:Curves.easeOutBack.transform(values[8]),
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(vertical: 12.0),
-                              child: Text(
-                                'Ask Later',
-                                style: outfitStyle.copyWith(
-                                    color: theme.hintTextColor,
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w400
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            ref.read(sharedPreferencesProvider).setBool('never_ask_again', true);
-                            controller.reverse!();
-                          },
-                          child: Transform.scale(
-                            scale:Curves.easeOutBack.transform(values[8]),
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(vertical: 12.0),
-                              child: Text(
-                                'Never Ask Again',
-                                style: outfitStyle.copyWith(
-                                    color: red,
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w400
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ) : Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(
-                      Icons.notifications_rounded,
-                      color: primaryColor,
-                      size: Curves.easeOutBack.transform(values[4]) * 50.0,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Transform.scale(
                           scale:Curves.easeOutBack.transform(values[5]),
-                          child: Text(
-                            'Subscribe to recent news',
-                            style: outfitStyle.copyWith(
-                                color: theme.titleTextColor,
-                                fontWeight: FontWeight.w800,
-                                fontSize: 18.0
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!.phoneNumber,
+                                textAlign: TextAlign.center,
+                                style: outfitStyle.copyWith(
+                                    color: theme.titleTextColor,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.0
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  final Uri launchUri = Uri(
+                                    scheme: 'tel',
+                                    path: '+201099238168',
+                                  );
+                                  launchUrl(launchUri);
+                                },
+                                child: Text(
+                                  '+201099238168',
+                                  textAlign: TextAlign.center,
+                                  style: outfitStyle.copyWith(
+                                      color: primaryColor,
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 12.0,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: primaryColor
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 12,),
-                        Transform.scale(
-                          scale:Curves.easeOutBack.transform(values[6]),
-                          child: Text(
-                            'Would you like to receive notifications about the latest anime & manga news and stay updated?',
-                            textAlign: TextAlign.center,
-                            style: outfitStyle.copyWith(
-                                color: theme.textColor,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 12.0
-                            ),
-                          ),
-                        ),
                       ],
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () async{
-                            NotificationSettings settings = await FirebaseMessaging.instance.requestPermission();
-                            if(settings.authorizationStatus == AuthorizationStatus.authorized) {
-                              await FirebaseMessaging.instance.subscribeToTopic(
-                                  'RecentNews');
-                            }else{
-                              permissionFail = true;
-                              overlayEntry.markNeedsBuild();
-                            }
-                          },
-                          child: Transform.scale(
-                            scale:Curves.easeOutBack.transform(values[7]),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  gradient: const LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        primaryColor,
-                                        accentColor
-                                      ]
-                                  )
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 12.0),
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Yes, I would like to stay updated',
-                                style: outfitStyle.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w700
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            controller.reverse!();
-                          },
-                          child: Transform.scale(
-                            scale:Curves.easeOutBack.transform(values[8]),
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(vertical: 12.0),
-                              child: Text(
-                                'No, I don\'t want that',
-                                style: outfitStyle.copyWith(
-                                    color: theme.hintTextColor,
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w400
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
                   ],
                 ),
               ),
@@ -352,15 +241,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
     ),);
     Overlay.of(context).insert(overlayEntry);
   }
+
   @override
   void initState() {
     super.initState();
-    _mainController = AnimationController(vsync: this , duration: const Duration(milliseconds: 400));
-    _mainAnimation = CurvedAnimation(parent: _mainController, curve: Curves.easeOut);
-    _mainController.value = ref.read(applicationThemeProvider) == AppTheme.light() ? 1.0 : 0.0;
-    _mainAnimation.addListener(() {
-      ref.read(applicationThemeProvider.notifier).changeTheme(AppTheme.lerp(AppTheme.light(), AppTheme.dark(), _mainAnimation.value));
-    },);
     _check();
     _permission();
   }
@@ -368,6 +252,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
     final theme = ref.watch(applicationThemeProvider);
+
     return PopScope(
         canPop: !isSearchOn,
         onPopInvoked: (didPop) {
@@ -381,108 +266,146 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
           color: theme.backgroundColor,
           child: Stack(
             children: [
-              Positioned(
-                top: screenSize.height * (7 / 63),
-                height: screenSize.height * (56 / 63),
-                width: screenSize.width,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    PageView.builder(
-                      controller:pageController,
-                      itemCount: 4,
-                      clipBehavior: Clip.none,
-                      onPageChanged: (value) {
-                        if (page != value) {
-                          setState(() {
-                            page = value;
-                          });
-                        }
-                      },
-                      itemBuilder: (context, index) => FutureBuilder(
-                        future: initializeController(),
-                        builder: (context, snapshot) => snapshot.hasData
-                            ? AnimatedBuilder(
-                          animation:pageController,
-                          builder: (context, child) => Opacity(
-                            opacity: 1 -
-                                getVal(
-                                    (pageController)
-                                        .hasClients
-                                        ? ((
-                                        pageController)
-                                        .page ??
-                                        0.0)
-                                        : 0.0,
-                                    index),
-                            child: child,
+              AnimatedScale(
+                duration: Duration(milliseconds: 200),
+                curve: Curves.easeOut,
+                scale: isMenuOn ? 1.2 : 1.0,
+
+                child: ClipPath(
+                  clipBehavior: isMenuOn ? Clip.antiAlias : Clip.none,
+                  child: Container(
+                    color: theme.backgroundColor,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top: screenSize.height * (7 / 63),
+                          height: screenSize.height * (56 / 63),
+                          width: screenSize.width,
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              PageView.builder(
+                                controller:pageController,
+                                itemCount: 4,
+                                clipBehavior: Clip.none,
+                                onPageChanged: (value) {
+                                  if (page != value) {
+                                    setState(() {
+                                      page = value;
+                                    });
+                                  }
+                                },
+                                itemBuilder: (context, index) => FutureBuilder(
+                                  future: initializeController(),
+                                  builder: (context, snapshot) => snapshot.hasData
+                                      ? AnimatedBuilder(
+                                    animation:pageController,
+                                    builder: (context, child) => Opacity(
+                                      opacity: 1 -
+                                          getVal(
+                                              (pageController)
+                                                  .hasClients
+                                                  ? ((
+                                                  pageController)
+                                                  .page ??
+                                                  0.0)
+                                                  : 0.0,
+                                              index),
+                                      child: child,
+                                    ),
+                                    child: [
+                                      const TopElementPage(
+                                        key: ValueKey('anime_page'),
+                                        elementType: ElementType.anime,
+                                      ),
+                                      const TopElementPage(
+                                        key: ValueKey('manga_page'),
+                                        elementType: ElementType.manga,
+                                      ),
+                                      const ArticlePage(
+                                        key: ValueKey('article_page'),
+                                      ),
+                                      LibraryPage(
+                                        key: const ValueKey('library_page'),
+                                        page: libraryPage,
+                                      )
+                                    ][index],
+                                  )
+                                      : const SizedBox(),
+                                ),
+                              ),
+                              if (isSearchOn)
+                                ElementSearch(
+                                  controller: searchController,
+                                  controlsOn: isControlsOn,
+                                  elementType:
+                                  page == 0 ? ElementType.anime : ElementType.manga,
+                                )
+                            ],
                           ),
-                          child: [
-                            const TopElementPage(
-                              key: ValueKey('anime_page'),
-                              elementType: ElementType.anime,
-                            ),
-                            const TopElementPage(
-                              key: ValueKey('manga_page'),
-                              elementType: ElementType.manga,
-                            ),
-                            const ArticlePage(
-                              key: ValueKey('article_page'),
-                            ),
-                            LibraryPage(
-                              key: const ValueKey('library_page'),
-                              page: libraryPage,
-                            )
-                          ][index],
-                        )
-                            : const SizedBox(),
-                      ),
+                        ),
+                        Positioned(
+                          height: screenSize.height * (7 / 63),
+                          width: screenSize.width,
+                          child: appBar(context),
+                        ),
+                        AnimatedPositioned(
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.easeOut,
+                            height: screenSize.height * (6 / 63),
+                            bottom: isSearchOn ? -screenSize.height * (6 / 63) : 0,
+                            width: screenSize.width,
+                            child: BottomAppBar6(
+                              controller: pageController,
+                              callback: (index) async {
+                                int page1 = page;
+                                setState(() {
+                                  next = index > page;
+                                  page = index;
+                                });
+                                double p =
+                                    (page1 + (index > page1 ? .5 : -.5)) / (4 - 1);
+                                double i =
+                                    (index + (index > page1 ? -.5 : .5)) / (4 - 1);
+
+                                double max = pageController.position.maxScrollExtent;
+                                await pageController.animateTo(p * max,
+                                    duration: const Duration(milliseconds: 200),
+                                    curve: Curves.easeIn);
+                                pageController.jumpTo(i * max);
+
+                                await pageController.animateToPage(index,
+                                    duration: const Duration(milliseconds: 200),
+                                    curve: Curves.easeOutQuad);
+                              },
+                            ))
+                      ],
                     ),
-                    if (isSearchOn)
-                      ElementSearch(
-                        controller: searchController,
-                        controlsOn: isControlsOn,
-                        elementType:
-                        page == 0 ? ElementType.anime : ElementType.manga,
-                      )
-                  ],
+                  ),
                 ),
               ),
-              Positioned(
-                height: screenSize.height * (7 / 63),
-                width: screenSize.width,
-                child: appBar(context),
+              IgnorePointer(
+                ignoring: !isMenuOn,
+                child: AnimatedValue(
+                    duration: Duration(milliseconds: 200),
+                    curve: Curves.easeOut,
+                    val: isMenuOn ? 1.0 : 0.0,
+                    builder: (val) =>  BackdropFilter(filter: ImageFilter.blur(sigmaX: val * 2.5, sigmaY: val * 2.5), child: GestureDetector(
+                        onTap: () => setState(() {
+                          isMenuOn = false;
+                        }),
+                        child: Container(color: Colors.black.withAlpha((255 * .3 * val).toInt()),)),)),
               ),
-              AnimatedPositioned(
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeOut,
-                  height: screenSize.height * (6 / 63),
-                  bottom: isSearchOn ? -screenSize.height * (6 / 63) : 0,
-                  width: screenSize.width,
-                  child: BottomAppBar6(
-                    controller: pageController,
-                    callback: (index) async {
-                      int page1 = page;
-                      setState(() {
-                        next = index > page;
-                        page = index;
-                      });
-                      double p =
-                          (page1 + (index > page1 ? .5 : -.5)) / (4 - 1);
-                      double i =
-                          (index + (index > page1 ? -.5 : .5)) / (4 - 1);
 
-                      double max = pageController.position.maxScrollExtent;
-                      await pageController.animateTo(p * max,
-                          duration: const Duration(milliseconds: 200),
-                          curve: Curves.easeIn);
-                      pageController.jumpTo(i * max);
+              IgnorePointer(
+                ignoring: !isMenuOn,
+                child: AnimatedSlide(
+                    offset: Offset(isMenuOn ? 0.0 : -1.0, 0.0),
+                    duration: Duration(milliseconds: 200),
+                    curve: Curves.easeOut,
+                    child: const MenuDrawer()),
+              )
 
-                      await pageController.animateToPage(index,
-                          duration: const Duration(milliseconds: 200),
-                          curve: Curves.easeOutQuad);
-                    },
-                  ))
             ],
           ),
         )
@@ -509,7 +432,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                 child: switch (page) {
                   0 => Text(
                     key: const ValueKey('anime_title'),
-                    'BROWSE ANIME',
+                    AppLocalizations.of(context)!.browseAnime,
                     style: outfitStyle.copyWith(
                       color: theme.titleTextColor,
                       fontWeight: FontWeight.w900,
@@ -518,7 +441,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                   ),
                   1 => Text(
                     key: const ValueKey('manga_title'),
-                    'BROWSE MANGA',
+                    AppLocalizations.of(context)!.browseManga,
                     style: outfitStyle.copyWith(
                       color: theme.titleTextColor,
                       fontWeight: FontWeight.w900,
@@ -527,7 +450,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                   ),
                   2 => Text(
                     key: const ValueKey('articles_title'),
-                    'BROWSE ARTICLES',
+                    AppLocalizations.of(context)!.browseArticles,
                     style: outfitStyle.copyWith(
                       color: theme.titleTextColor,
                       fontWeight: FontWeight.w900,
@@ -542,7 +465,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                         });
                       },
                       initialPage: libraryPage,
-                      tabs: const ['Favorites', 'Collections'],
+                      tabs:  [AppLocalizations.of(context)!.favorites, AppLocalizations.of(context)!.collections],
                     ),
                   ),
                 }),
@@ -571,24 +494,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                   ),
                 ),
               )
-                  : IconButton(
-                key: const ValueKey('night_button'),
-                icon: Transform.rotate(
-                  angle: -pi / 4,
-                  child: const Icon(
-                    Icons.nightlight_rounded,
-                  ),
+                  :
+              IconButton(
+                key: const ValueKey('menu_button'),
+                icon: const Icon(
+                  Icons.menu_rounded,
                 ),
                 color: theme.accentColor,
                 highlightColor: accentColor.withOpacity(.1),
                 onPressed: () {
-                  if(_mainController.isCompleted || _mainController.value == 1.0) {
-                    _mainController.reverse();
-                  } else {
-                    _mainController.forward();
-                  }
+
+                  setState(() {
+                    isMenuOn = !isMenuOn;
+                  });
                 },
               ),
+
             ),
           ),
           AnimatedPositioned(
@@ -645,7 +566,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                                 border: InputBorder.none,
                                 contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 8.0),
-                                hintText: 'Search for ${switch(page) {0 => 'an anime' , 1 => 'a manga' ,2 => 'an article', _=> ''}}...',
+                                hintText: '${AppLocalizations.of(context)!.search} ${switch(page) {0 => AppLocalizations.of(context)!.anime , 1 => AppLocalizations.of(context)!.manga, _=> ''}}...',
                                 hintStyle: outfitStyle.copyWith(
                                     fontWeight: FontWeight.w700,
                                     color: theme.hintTextColor,
@@ -687,7 +608,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                 ),
               ),
             ),
+          ),
+          AnimatedPositioned(
+            right: page == 2  ? 0.0 : -screenSize.width * .5,
+            top: 0,
+            bottom: 0,
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeOutBack,
+            child: GestureDetector(
+              onTap: () {
+
+                _showContactUs();
+              },
+              child: Center(
+                child: Text(
+                  AppLocalizations.of(context)!.contactUs,
+                  style: outfitStyle.copyWith(
+                      color: primaryColor,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w300
+                  ),
+                ),
+              ),
+            ),
           )
+
         ],
       ),
     );

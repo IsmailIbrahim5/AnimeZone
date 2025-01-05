@@ -65,6 +65,14 @@ class ElementAPI {
         },
       );
 
+  static Uri getCurrentSeason() =>
+      Uri.https(
+          JIKANAPIBaseUrl,
+          '/v4/seasons',
+      );
+
+
+
   static Uri getSeasonAnime({int? page}) =>
       Uri.https(
         JIKANAPIBaseUrl,

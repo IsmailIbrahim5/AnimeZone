@@ -46,6 +46,13 @@ class CharacterAPI {
         '/v4/characters/$id/pictures',
       );
 
+
+  static Uri getCharacterVoiceActors(int id) =>
+      Uri.https(
+        JIKANAPIBaseUrl,
+        '/v4/characters/$id/voices',
+      );
+
   static Uri getCharacterAnime(int id) =>
       Uri.https(
         JIKANAPIBaseUrl,

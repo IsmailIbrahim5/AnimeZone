@@ -154,6 +154,8 @@ class TopCharacterProvider extends FutureProvider<List<Character>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin TopCharacterRef on FutureProviderRef<List<Character>> {
   /// The parameter `page` of this provider.
   int? get page;
@@ -286,6 +288,8 @@ class CharacterProvider extends FutureProvider<Character> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin CharacterRef on FutureProviderRef<Character> {
   /// The parameter `id` of this provider.
   int get id;
@@ -414,6 +418,8 @@ class CharacterPicturesProvider extends FutureProvider<List<Image>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin CharacterPicturesRef on FutureProviderRef<List<Image>> {
   /// The parameter `id` of this provider.
   int get id;
@@ -545,6 +551,8 @@ class CharacterAnimeProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin CharacterAnimeRef on FutureProviderRef<List<Map<String, dynamic>>> {
   /// The parameter `id` of this provider.
   int get id;
@@ -558,5 +566,141 @@ class _CharacterAnimeProviderElement
   @override
   int get id => (origin as CharacterAnimeProvider).id;
 }
+
+String _$characterVoiceActorsHash() =>
+    r'c097d763841f80c4dd19ab35c96aff456032d418';
+
+/// See also [characterVoiceActors].
+@ProviderFor(characterVoiceActors)
+const characterVoiceActorsProvider = CharacterVoiceActorsFamily();
+
+/// See also [characterVoiceActors].
+class CharacterVoiceActorsFamily
+    extends Family<AsyncValue<List<Map<String, dynamic>>>> {
+  /// See also [characterVoiceActors].
+  const CharacterVoiceActorsFamily();
+
+  /// See also [characterVoiceActors].
+  CharacterVoiceActorsProvider call({
+    required int id,
+  }) {
+    return CharacterVoiceActorsProvider(
+      id: id,
+    );
+  }
+
+  @override
+  CharacterVoiceActorsProvider getProviderOverride(
+    covariant CharacterVoiceActorsProvider provider,
+  ) {
+    return call(
+      id: provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'characterVoiceActorsProvider';
+}
+
+/// See also [characterVoiceActors].
+class CharacterVoiceActorsProvider
+    extends FutureProvider<List<Map<String, dynamic>>> {
+  /// See also [characterVoiceActors].
+  CharacterVoiceActorsProvider({
+    required int id,
+  }) : this._internal(
+          (ref) => characterVoiceActors(
+            ref as CharacterVoiceActorsRef,
+            id: id,
+          ),
+          from: characterVoiceActorsProvider,
+          name: r'characterVoiceActorsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$characterVoiceActorsHash,
+          dependencies: CharacterVoiceActorsFamily._dependencies,
+          allTransitiveDependencies:
+              CharacterVoiceActorsFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  CharacterVoiceActorsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
+  final int id;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<Map<String, dynamic>>> Function(
+            CharacterVoiceActorsRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: CharacterVoiceActorsProvider._internal(
+        (ref) => create(ref as CharacterVoiceActorsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  FutureProviderElement<List<Map<String, dynamic>>> createElement() {
+    return _CharacterVoiceActorsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CharacterVoiceActorsProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin CharacterVoiceActorsRef on FutureProviderRef<List<Map<String, dynamic>>> {
+  /// The parameter `id` of this provider.
+  int get id;
+}
+
+class _CharacterVoiceActorsProviderElement
+    extends FutureProviderElement<List<Map<String, dynamic>>>
+    with CharacterVoiceActorsRef {
+  _CharacterVoiceActorsProviderElement(super.provider);
+
+  @override
+  int get id => (origin as CharacterVoiceActorsProvider).id;
+}
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

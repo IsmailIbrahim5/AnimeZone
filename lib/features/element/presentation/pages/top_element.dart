@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:animezone/core/providers/providers.dart';
 import 'package:animezone/core/widgets/background.dart';
@@ -22,6 +23,7 @@ import '../../../../core/widgets/error.dart';
 import '../../domain/models/manga.dart';
 import '../../domain/models/anime.dart';
 import 'element_details.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TopElementPage extends ConsumerStatefulWidget {
   final ElementType elementType;
@@ -137,9 +139,8 @@ class TopAnime extends ConsumerWidget {
                 clipBehavior: Clip.none,
                 itemBuilder: (context, index) {
                   final wallpaper = ref.watch(elementWallpaperProvider(
-                      title:
-                      data.elements[index %  data.elements.length].titles.first['title'] ?? '',
-                      id:  data.elements[index %  data.elements.length].malId,
+                      title: data.elements[index %  data.elements.length].titles.where((element) => element['type'] == 'English',).firstOrNull?['title'] ?? '',
+                      id: data.elements[index %  data.elements.length].malId,
                       elementType: ElementType.anime));
                   return FutureBuilder(
                     future: initializeController(),
@@ -203,7 +204,34 @@ class TopAnime extends ConsumerWidget {
                                           color: Colors.white,
                                         ),
                                       ),
-                                      error: (error, stackTrace) => const Error1(),
+                                      error: (error, stackTrace) {
+                                        final pictures = ref.watch(elementPicturesProvider(
+                                            id:  data.elements[index %  data.elements.length].malId,
+                                            elementType: ElementType.anime));
+                                        return pictures.when(data: (data) =>CachedNetworkImage(
+                                          imageUrl: data.first.largeImageUrl??data.first.imageUrl??'',
+                                          imageBuilder:
+                                              (context, imageProvider) => Stack(
+                                            fit: StackFit.expand,
+                                            children: [
+                                              Image(
+                                                image: imageProvider,
+                                                fit: BoxFit.cover,
+                                              ),
+                                              Container(
+                                                color: Colors.black12,
+                                              ),
+                                            ],
+                                          ),
+                                          placeholder: (context, url) =>
+                                          const LoadingWidget(
+                                            color: Colors.white,
+                                          ),
+                                        ) , error: (error, stackTrace) => const SizedBox(),
+                                          loading: () => const  LoadingWidget(),
+                                        );
+
+                                      },
                                       loading: () => const LoadingWidget(
                                         color: Colors.white,
                                       ),
@@ -345,8 +373,8 @@ class TopAnime extends ConsumerWidget {
                                                   ),
                                                   Text(
                                                     switch( data.elements[index %  data.elements.length]){
-                                                      Anime anime => '${anime.episodes ?? '-'} Episodes',
-                                                      Manga manga => '${manga.volumes ?? '-'} Volumes',
+                                                      Anime anime => '${anime.episodes ?? '-'} ${AppLocalizations.of(context)!.episodes}',
+                                                      Manga manga => '${manga.volumes ?? '-'} ${AppLocalizations.of(context)!.volumes}',
                                                       _ => ''
                                                     },
                                                     style: outfitStyle.copyWith(
@@ -548,7 +576,7 @@ class SeasonAnime extends ConsumerWidget {
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
-              'This Season',
+              AppLocalizations.of(context)!.thisSeason,
               style: outfitStyle.copyWith(
                   color: theme.titleTextColor,
                   fontSize: 20.0,
@@ -564,7 +592,7 @@ class SeasonAnime extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(
-                  'MORE',
+                  AppLocalizations.of(context)!.more,
                   style: montserratStyle.copyWith(
                     color: primaryColor.withOpacity(.6),
                     fontSize: 12.0,
@@ -605,6 +633,11 @@ class MangaCollection extends ConsumerWidget {
         ref.watch(mangaCollectionProvider(collection: collection));
     final screenSize = MediaQuery.sizeOf(context);
     final theme = ref.watch(applicationThemeProvider);
+    final collectionName = switch(collection){
+      'manga' => AppLocalizations.of(context)!.manga,
+      'lightnovel' => AppLocalizations.of(context)!.lightNovel,
+    _ => '${collection[0].toUpperCase()}${collection.substring(1)}'
+    };
     return SizedBox(
       height: screenSize.height * .45,
       child: Column(children: [
@@ -613,7 +646,7 @@ class MangaCollection extends ConsumerWidget {
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
-              'New ${collection[0].toUpperCase()}${collection.substring(1)}',
+              '${AppLocalizations.of(context)!.neww} $collectionName',
               style: outfitStyle.copyWith(
                   color: theme.titleTextColor,
                   fontSize: 20.0,
@@ -629,7 +662,7 @@ class MangaCollection extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(
-                  'MORE',
+                  AppLocalizations.of(context)!.more,
                   style: montserratStyle.copyWith(
                     color: primaryColor.withOpacity(.6),
                     fontSize: 12.0,
@@ -677,7 +710,7 @@ class RecentEpisodes extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
           child:
               Text(
-                'Recent Episodes',
+                AppLocalizations.of(context)!.recentEpisodes,
                 style: outfitStyle.copyWith(
                     color: theme.titleTextColor,
                     fontSize: 20.0,
@@ -726,7 +759,7 @@ class RecentReviews extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
           child:
               Text(
-                'Recent Reviews',
+                AppLocalizations.of(context)!.recentReviews,
                 style: outfitStyle.copyWith(
                     color: theme.titleTextColor,
                     fontSize: 20.0,
@@ -771,7 +804,7 @@ class RecentRecommendations extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
         child:
             Text(
-              'Recent Recommendations',
+              AppLocalizations.of(context)!.recentRecommendations,
               style: outfitStyle.copyWith(
                   color: theme.titleTextColor,
                   fontSize: 20.0,
@@ -827,14 +860,14 @@ class GenreBox extends StatelessWidget {
                         children: [
                           Expanded(
                               child: GenreCard(
-                            title: 'ACTION',
+                            title: AppLocalizations.of(context)!.action,
                             color: const Color(0xFF2E8568),
                             image: 'assets/images/deku.png',
                             type: elementType,
                           )),
                           Expanded(
                               child: GenreCard(
-                            title: 'ROMANCE',
+                            title: AppLocalizations.of(context)!.romance,
                             color: const Color(0xFFB42816),
                             image: 'assets/images/kaguya.png',
                             type: elementType,
@@ -845,14 +878,14 @@ class GenreBox extends StatelessWidget {
                         children: [
                           Expanded(
                               child: GenreCard(
-                            title: 'ADVENTURE',
+                            title: AppLocalizations.of(context)!.adventure,
                             color: const Color(0xFFF69738),
                             image: 'assets/images/naruto.png',
                             type: elementType,
                           )),
                           Expanded(
                               child: GenreCard(
-                            title: 'COMEDY',
+                            title: AppLocalizations.of(context)!.comedy,
                             color: const Color(0xFF418FD7),
                             image: 'assets/images/aqua.png',
                             type: elementType,
@@ -867,14 +900,14 @@ class GenreBox extends StatelessWidget {
                         children: [
                           Expanded(
                               child: GenreCard(
-                            title: 'FANTASY',
+                            title: AppLocalizations.of(context)!.fantasy,
                             color: const Color(0xFFFE9F45),
                             image: 'assets/images/emma.png',
                             type: elementType,
                           )),
                           Expanded(
                               child: GenreCard(
-                            title: 'SCI-FI',
+                            title: AppLocalizations.of(context)!.sciFi,
                             color: const Color(0xffbb42816),
                             image: 'assets/images/zerotwo.png',
                             type: elementType,
@@ -885,14 +918,14 @@ class GenreBox extends StatelessWidget {
                         children: [
                           Expanded(
                               child: GenreCard(
-                            title: 'DRAMA',
+                            title: AppLocalizations.of(context)!.drama,
                             color: const Color(0xFF62D6E9),
                             image: 'assets/images/kaori.png',
                             type: elementType,
                           )),
                           Expanded(
                               child: GenreCard(
-                            title: 'SLICE\nOF LIFE',
+                            title: AppLocalizations.of(context)!.sliceOfLife,
                             color: const Color(0xFFFFBBD0),
                             image: 'assets/images/kanna.png',
                             type: elementType,
@@ -907,14 +940,14 @@ class GenreBox extends StatelessWidget {
                         children: [
                           Expanded(
                               child: GenreCard(
-                            title: 'SUPER\nNATURAL',
+                            title: AppLocalizations.of(context)!.superNatural,
                             color: const Color(0xFF362643),
                             image: 'assets/images/kira.png',
                             type: elementType,
                           )),
                           Expanded(
                               child: GenreCard(
-                            title: 'AVANT\nGARDE',
+                            title: AppLocalizations.of(context)!.avantGarde,
                             color: const Color(0xFF0261CD),
                             image: 'assets/images/shinji.png',
                             type: elementType,
@@ -925,14 +958,14 @@ class GenreBox extends StatelessWidget {
                         children: [
                           Expanded(
                               child: GenreCard(
-                            title: 'SPORTS',
+                            title: AppLocalizations.of(context)!.sports,
                             color: const Color(0xFFF69738),
                             image: 'assets/images/hinata.png',
                             type: elementType,
                           )),
                           Expanded(
                               child: GenreCard(
-                            title: 'HORROR',
+                            title: AppLocalizations.of(context)!.horror,
                             color: const Color(0xFF762720),
                             image: 'assets/images/another.png',
                             type: elementType,

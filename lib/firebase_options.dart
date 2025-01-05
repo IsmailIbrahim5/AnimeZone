@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:729571738343:android:f88f82b47498f9e4221842',
     messagingSenderId: '729571738343',
     projectId: 'animezone-e023d',
-    storageBucket: 'animezone-e023d.appspot.com',
+    storageBucket: 'animezone-e023d.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -62,7 +62,7 @@ class DefaultFirebaseOptions {
     appId: '1:729571738343:ios:cd4595df36f80c61221842',
     messagingSenderId: '729571738343',
     projectId: 'animezone-e023d',
-    storageBucket: 'animezone-e023d.appspot.com',
+    storageBucket: 'animezone-e023d.firebasestorage.app',
     iosBundleId: 'com.glitch.animezone',
   );
 

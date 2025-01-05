@@ -15,6 +15,7 @@ import '../../domain/models/element.dart' as elem;
 
 import '../../../../config/styles/styles.dart';
 import '../../../../core/widgets/loading_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ElementWidget1 extends ConsumerStatefulWidget {
   final elem.Element? element;
@@ -130,7 +131,7 @@ class _ElementWidget1State extends ConsumerState<ElementWidget1> {
                     Row(
                       children: [
                         Text(
-                          'Score',
+                          AppLocalizations.of(context)!.score,
                           style: outfitStyle.copyWith(
                               color: theme.textColor,
                               fontWeight: FontWeight.w300),
@@ -175,7 +176,7 @@ class _ElementWidget1State extends ConsumerState<ElementWidget1> {
                         Anime anime =>
                           '${anime.episodes != null ? '${anime.episodes} Eps • ' : ''}${anime.status}',
                         Manga manga =>
-                          '${manga.volumes != null ? '${manga.volumes} Volumes • ' : ''}${manga.status}',
+                          '${manga.volumes != null ? '${manga.volumes} ${AppLocalizations.of(context)!.volumes} • ' : ''}${manga.status}',
                         _ => ''
                       },
                       style: outfitStyle.copyWith(
@@ -281,7 +282,7 @@ class _ElementWidget2State extends ConsumerState<ElementWidget2> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Score',
+                      AppLocalizations.of(context)!.score,
                       style: outfitStyle.copyWith(
                           color: primaryColor, fontWeight: FontWeight.w700),
                     ),
@@ -320,7 +321,7 @@ class _ElementWidget2State extends ConsumerState<ElementWidget2> {
                 Row(
                   children: [
                     Text(
-                      'Genres',
+                      AppLocalizations.of(context)!.genres,
                       style: outfitStyle.copyWith(
                           color: primaryColor, fontWeight: FontWeight.w700),
                     ),
@@ -352,7 +353,7 @@ class _ElementWidget2State extends ConsumerState<ElementWidget2> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Members',
+                      AppLocalizations.of(context)!.members,
                       style: outfitStyle.copyWith(
                           color: primaryColor, fontWeight: FontWeight.w700),
                     ),
@@ -372,7 +373,7 @@ class _ElementWidget2State extends ConsumerState<ElementWidget2> {
                     Anime anime =>
                     '${anime.episodes != null ? '${anime.episodes} Eps • ' : ''}${anime.status}',
                     Manga manga =>
-                    '${manga.volumes != null ? '${manga.volumes} Volumes • ' : ''}${manga.status}',
+                    '${manga.volumes != null ? '${manga.volumes} ${AppLocalizations.of(context)!.volumes} • ' : ''}${manga.status}',
                     _ => ''
                   },
                   style: outfitStyle.copyWith(

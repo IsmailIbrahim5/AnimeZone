@@ -1,7 +1,7 @@
 name: animezone
 description: "Your Ultimate Anime Hub."
 
-version: 1.0.0+1
+version: 1.0.6+6
 
 environment:
   sdk: '>=3.3.0-279.3.beta <4.0.0'
@@ -9,7 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_localizations:
+    sdk: flutter
 
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
@@ -27,9 +28,10 @@ dependencies:
   shared_preferences: ^2.2.3
   sqflite: ^2.3.3+1
   firebase_core: ^3.4.0
-  firebase_messaging: ^15.1.0
-  firebase_analytics: ^11.3.0
+  firebase_messaging: ^15.1.6
+  firebase_analytics: ^11.3.6
   permission_handler: ^11.3.1
+  firebase_crashlytics: ^4.2.0
 
 dev_dependencies:
   flutter_test:
@@ -42,7 +44,7 @@ dev_dependencies:
   riverpod_lint:
   custom_lint:
 flutter:
-
+  generate: true
   uses-material-design: true
 
   assets:
@@ -108,3 +110,5 @@ flutter:
           weight: 600
         - asset: assets/fonts/Oswald-Bold.ttf
           weight: 700
+flutter_intl:
+  enabled: true

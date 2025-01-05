@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/providers/providers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RecommendationWidget extends ConsumerWidget {
   final Map<String,dynamic> recommendation;
@@ -57,7 +58,7 @@ class RecommendationWidget extends ConsumerWidget {
                         Expanded(child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('If you liked...', style: outfitStyle.copyWith(
+                            Text('${AppLocalizations.of(context)!.ifYouLiked}...', style: outfitStyle.copyWith(
                                 color: primaryColor,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 10.0
@@ -96,7 +97,7 @@ class RecommendationWidget extends ConsumerWidget {
                         Expanded(child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Then you might like...', style: outfitStyle.copyWith(
+                            Text('${AppLocalizations.of(context)!.thenYouMightLike}...', style: outfitStyle.copyWith(
                                 color: primaryColor,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 10.0

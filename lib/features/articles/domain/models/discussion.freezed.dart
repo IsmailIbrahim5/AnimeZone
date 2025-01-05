@@ -27,8 +27,12 @@ mixin _$Discussion {
   int get lastVisiblePage => throw _privateConstructorUsedError;
   List<DiscussionElement> get replies => throw _privateConstructorUsedError;
 
+  /// Serializes this Discussion to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Discussion
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DiscussionCopyWith<Discussion> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -59,6 +63,8 @@ class _$DiscussionCopyWithImpl<$Res, $Val extends Discussion>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Discussion
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,6 +98,8 @@ class _$DiscussionCopyWithImpl<$Res, $Val extends Discussion>
     ) as $Val);
   }
 
+  /// Create a copy of Discussion
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DiscussionElementCopyWith<$Res> get topic {
@@ -128,6 +136,8 @@ class __$$DiscussionImplCopyWithImpl<$Res>
       _$DiscussionImpl _value, $Res Function(_$DiscussionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Discussion
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -211,12 +221,14 @@ class _$DiscussionImpl implements _Discussion {
             const DeepCollectionEquality().equals(other._replies, _replies));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, url, title, topic,
       lastVisiblePage, const DeepCollectionEquality().hash(_replies));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Discussion
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DiscussionImplCopyWith<_$DiscussionImpl> get copyWith =>
@@ -252,8 +264,11 @@ abstract class _Discussion implements Discussion {
   int get lastVisiblePage;
   @override
   List<DiscussionElement> get replies;
+
+  /// Create a copy of Discussion
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DiscussionImplCopyWith<_$DiscussionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -276,8 +291,12 @@ mixin _$DiscussionElement {
   List<Map<String, dynamic>>? get followContent =>
       throw _privateConstructorUsedError;
 
+  /// Serializes this DiscussionElement to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DiscussionElement
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DiscussionElementCopyWith<DiscussionElement> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -311,6 +330,8 @@ class _$DiscussionElementCopyWithImpl<$Res, $Val extends DiscussionElement>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of DiscussionElement
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -399,6 +420,8 @@ class __$$DiscussionElementImplCopyWithImpl<$Res>
       $Res Function(_$DiscussionElementImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DiscussionElement
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -549,7 +572,7 @@ class _$DiscussionElementImpl implements _DiscussionElement {
                 .equals(other._followContent, _followContent));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -564,7 +587,9 @@ class _$DiscussionElementImpl implements _DiscussionElement {
       const DeepCollectionEquality().hash(_content),
       const DeepCollectionEquality().hash(_followContent));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DiscussionElement
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DiscussionElementImplCopyWith<_$DiscussionElementImpl> get copyWith =>
@@ -616,8 +641,11 @@ abstract class _DiscussionElement implements DiscussionElement {
   List<Map<String, dynamic>> get content;
   @override
   List<Map<String, dynamic>>? get followContent;
+
+  /// Create a copy of DiscussionElement
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DiscussionElementImplCopyWith<_$DiscussionElementImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

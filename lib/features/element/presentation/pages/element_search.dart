@@ -16,6 +16,7 @@ import '../../../../core/providers/providers.dart';
 import '../../domain/models/element.dart' as elem;
 import '../providers/providers.dart';
 import 'element_details.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ElementSearch extends ConsumerStatefulWidget {
   final TextEditingController controller;
@@ -57,9 +58,13 @@ class _ElementSearchState extends ConsumerState<ElementSearch> {
         );
       },
     );
-    searchControls = widget.elementType == ElementType.anime
-        ? SearchControls.anime()
-        : SearchControls.manga();
+   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
+       searchControls = widget.elementType == ElementType.anime
+           ? SearchControls.anime(context: context)
+           : SearchControls.manga(context: context);
+     });
+
   }
 
   Timer? request;
@@ -142,7 +147,7 @@ class _ElementSearchState extends ConsumerState<ElementSearch> {
                                       child: child,
                                     ),
                                     child: Text(
-                                      "Don't know what you are looking for?",
+                                      AppLocalizations.of(context)!.message1,
                                       style: outfitStyle.copyWith(
                                           fontWeight: FontWeight.w700,
                                           color: theme.titleTextColor,
@@ -155,37 +160,37 @@ class _ElementSearchState extends ConsumerState<ElementSearch> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      TweenAnimationBuilder(
-                                        duration:
-                                            const Duration(milliseconds: 400),
-                                        curve: Curves.easeOutBack,
-                                        tween:
-                                            Tween<double>(begin: 0.0, end: 1.0),
-                                        builder: (context, value, child) =>
-                                            Transform.scale(
-                                          scale: value,
-                                          child: child,
-                                        ),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: primaryColor,
-                                            borderRadius: BorderRadius.circular(
-                                              8.0,
-                                            ),
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 24.0, vertical: 8.0),
-                                          child: Text(
-                                            "Recommend me",
-                                            style: outfitStyle.copyWith(
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 12.0,
-                                      ),
+                                      // TweenAnimationBuilder(
+                                      //   duration:
+                                      //       const Duration(milliseconds: 400),
+                                      //   curve: Curves.easeOutBack,
+                                      //   tween:
+                                      //       Tween<double>(begin: 0.0, end: 1.0),
+                                      //   builder: (context, value, child) =>
+                                      //       Transform.scale(
+                                      //     scale: value,
+                                      //     child: child,
+                                      //   ),
+                                      //   child: Container(
+                                      //     decoration: BoxDecoration(
+                                      //       color: primaryColor,
+                                      //       borderRadius: BorderRadius.circular(
+                                      //         8.0,
+                                      //       ),
+                                      //     ),
+                                      //     padding: const EdgeInsets.symmetric(
+                                      //         horizontal: 24.0, vertical: 8.0),
+                                      //     child: Text(
+                                      //       AppLocalizations.of(context)!.recommendMe,
+                                      //       style: outfitStyle.copyWith(
+                                      //           fontWeight: FontWeight.w700,
+                                      //           color: Colors.white),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      // const SizedBox(
+                                      //   width: 12.0,
+                                      // ),
                                       TweenAnimationBuilder(
                                         duration:
                                             const Duration(milliseconds: 400),
@@ -240,7 +245,7 @@ class _ElementSearchState extends ConsumerState<ElementSearch> {
                                                 horizontal: 24.0,
                                                 vertical: 8.0),
                                             child: Text(
-                                              "Random ${widget.elementType == ElementType.anime ? 'Anime' : 'Manga'}",
+                                              "${widget.elementType == ElementType.anime ? AppLocalizations.of(context)!.randomAnime : AppLocalizations.of(context)!.randomAnime}",
                                               style: outfitStyle.copyWith(
                                                   fontWeight: FontWeight.w700,
                                                   color: primaryColor),
@@ -463,7 +468,7 @@ class _ElementSearchState extends ConsumerState<ElementSearch> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Status',
+                AppLocalizations.of(context)!.status,
                 style: outfitStyle.copyWith(
                   fontWeight: FontWeight.w700,
                   fontSize: 14.0,
@@ -533,7 +538,7 @@ class _ElementSearchState extends ConsumerState<ElementSearch> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Type',
+                AppLocalizations.of(context)!.type,
                 style: outfitStyle.copyWith(
                     fontWeight: FontWeight.w700,
                     fontSize: 14.0,
@@ -595,7 +600,7 @@ class _ElementSearchState extends ConsumerState<ElementSearch> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Rating',
+    AppLocalizations.of(context)!.rating,
                   style: outfitStyle.copyWith(
                       fontWeight: FontWeight.w700,
                       fontSize: 14.0,
@@ -656,7 +661,7 @@ class _ElementSearchState extends ConsumerState<ElementSearch> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Ordering',
+                AppLocalizations.of(context)!.ordering,
                 style: outfitStyle.copyWith(
                   fontWeight: FontWeight.w700,
                   fontSize: 14.0,
@@ -700,37 +705,38 @@ class SearchControls {
     'RX',
   ];
   String? ordering;
-  final listOfOrdering = [
-    'Title',
-    'Date',
-    'Score',
-    'Rank',
-    'Popularity',
-    'Members',
-    'Favorites',
-  ];
+  late final List<String> listOfOrdering ;
   Map<String, bool> genres = {
-    'Action': false,
-    'Adventure': false,
-    'Avant Garde': false,
-    'Boys Love': false,
-    'Comedy': false,
-    'Drama': false,
-    'Fantasy': false,
-    'Girls Love': false,
-    'Gourmet': false,
-    'Horror': false,
-    'Mystery': false,
-    'Romance': false,
-    'Sci-Fi': false,
-    'Slice of Life': false,
-    'Sports': false,
-    'Supernatural': false,
-    'Suspense': false,
-    'Award Winning': false,
+  'Action': false,
+  'Adventure': false,
+  'Avant Garde': false,
+  'Boys Love': false,
+  'Comedy': false,
+  'Drama': false,
+  'Fantasy': false,
+  'Girls Love': false,
+  'Gourmet': false,
+  'Horror': false,
+  'Mystery': false,
+  'Romance': false,
+  'Sci-Fi': false,
+  'Slice of Life': false,
+  'Sports': false,
+  'Supernatural': false,
+  'Suspense': false,
+  'Award Winning': false,
   };
-  SearchControls.anime({this.sfw = true}) {
-    listOfStatus = ['Airing', 'Upcoming', 'Complete'];
+  SearchControls.anime({this.sfw = true ,required BuildContext context}) {
+    listOfStatus = [AppLocalizations.of(context)!.airing, AppLocalizations.of(context)!.upcoming, AppLocalizations.of(context)!.complete];
+    listOfOrdering = [
+      AppLocalizations.of(context)!.title,
+      AppLocalizations.of(context)!.date,
+      AppLocalizations.of(context)!.score,
+      AppLocalizations.of(context)!.rank,
+      AppLocalizations.of(context)!.popularity,
+      AppLocalizations.of(context)!.members,
+      AppLocalizations.of(context)!.favorites,
+    ];
     listOfTypes = [
       'All',
       'Tv',
@@ -744,7 +750,16 @@ class SearchControls {
       'Tv Special'
     ];
   }
-  SearchControls.manga({this.sfw = true}) {
+  SearchControls.manga({this.sfw = true, required BuildContext context}) {
+    listOfOrdering = [
+      AppLocalizations.of(context)!.title,
+      AppLocalizations.of(context)!.date,
+      AppLocalizations.of(context)!.score,
+      AppLocalizations.of(context)!.rank,
+      AppLocalizations.of(context)!.popularity,
+      AppLocalizations.of(context)!.members,
+      AppLocalizations.of(context)!.favorites,
+    ];
     listOfStatus = [
       'Publishing',
       'Upcoming',

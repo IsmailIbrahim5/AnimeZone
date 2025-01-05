@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/widgets/error.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../widgets/element_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CollectionDetails extends ConsumerStatefulWidget {
   final String? genre;
@@ -28,7 +29,7 @@ class _CollectionDetailsState extends ConsumerState<CollectionDetails> {
   bool grid = false;
 
   String? sortBy;
-  final listOfOrdering = [
+  List<String> listOfOrdering = [
     'Title',
     'Date',
     'Score',
@@ -42,6 +43,7 @@ class _CollectionDetailsState extends ConsumerState<CollectionDetails> {
 
   @override
   Widget build(BuildContext context) {
+
     final screenSize = MediaQuery.sizeOf(context);
     final theme = ref.watch(applicationThemeProvider);
     final elements = widget.thisSeason
@@ -52,6 +54,11 @@ class _CollectionDetailsState extends ConsumerState<CollectionDetails> {
             : ref.watch(mangaCollectionProvider(collection: widget.genre! ,ordering:( sortBy == 'Date' ? 'start_date' : sortBy?.toLowerCase() ),page: page))
         : ref.watch(genreElementProvider(
             elementType: widget.elementType, genre: widget.genre! ,ordering: sortBy == 'Date' ? 'start_date' : sortBy?.toLowerCase() , page: page));
+    final collectionName = switch(widget.genre){
+      'manga' => AppLocalizations.of(context)!.manga,
+      'lightnovel' => AppLocalizations.of(context)!.lightNovel,
+      _ => '${widget.genre?[0].toUpperCase()}${widget.genre?.substring(1)}'
+    };
     return Material(
       color: theme.backgroundColor,
       child: Column(
@@ -90,7 +97,7 @@ class _CollectionDetailsState extends ConsumerState<CollectionDetails> {
                   ),
                   Center(
                     child: Text(
-                      '${widget.thisSeason ?(widget.elementType == ElementType.anime ? 'THIS SEASON' : 'NEW RELEASES') : widget.genre!.toUpperCase()} ${widget.elementType == ElementType.anime ? 'ANIME' : 'MANGA'}',
+                      '${widget.thisSeason ?(widget.elementType == ElementType.anime ? AppLocalizations.of(context)!.thisSeason.toUpperCase() : '${AppLocalizations.of(context)!.neww.toUpperCase()} ${collectionName.toUpperCase()}') : widget.genre!.toUpperCase()} ${widget.elementType == ElementType.anime ? 'ANIME' : ''}',
                       style: outfitStyle.copyWith(
                         color: theme.titleTextColor,
                         fontWeight: FontWeight.w900,
@@ -184,6 +191,7 @@ class _CollectionDetailsState extends ConsumerState<CollectionDetails> {
                       duration: const Duration(milliseconds: 400),
                       child: grid
                           ? GridView.builder(
+                        physics: const BouncingScrollPhysics(),
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
@@ -195,6 +203,7 @@ class _CollectionDetailsState extends ConsumerState<CollectionDetails> {
                       )
                           : ListView.builder(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        physics: const BouncingScrollPhysics(),
                         itemCount: data.elements.length,
                         itemBuilder: (context, index) =>
                             ElementWidget2(element: data.elements[index]),

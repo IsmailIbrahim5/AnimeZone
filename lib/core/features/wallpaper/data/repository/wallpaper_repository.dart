@@ -19,21 +19,25 @@ class WallpaperRepository{
     final db = ref.read(databaseProvider);
       try {
         if (cachedImages.containsKey(title) && cachedImages[title] != null) return Future.value(cachedImages[title]);
-        print(WallpaperAPI.getWallpaper(q: '$title $type'));
-        final response = await dioClient.getUri(WallpaperAPI.getWallpaper(q: '$title $type'));
-          final wallpapersData = List<Map<String,dynamic>>.from((response.data as Map<String,dynamic>)['items'] as List<dynamic>);
-          String qualifiedImage = '';
+        String q = title.split(':').first.replaceAll('2nd', '').replaceAll('Season', '').replaceAll('Second', '').replaceAll('3rd', '').replaceAll('Third', '').replaceAll('2', '').replaceAll('3', '');
 
-          for (var wallpaperData in wallpapersData) {
-            var data = wallpaperData['image'] as Map<String, dynamic>;
-            int height = data['height'] as int;
-            int width = data['width'] as int;
-            if (width / height > 1.0) {
-              qualifiedImage = wallpaperData['link'] as String;
-              cachedImages.addAll({title: qualifiedImage});
-              break;
-            }
-          }
+        final response = await dioClient.getUri(WallpaperAPI.getWallpaper(q: q));
+          final wallpapersData = List<Map<String,dynamic>>.from((response.data as Map<String,dynamic>)['data'] as List<dynamic>);
+
+
+          String qualifiedImage = wallpapersData.first['path'] as String;
+          // for (var wallpaperData in wallpapersData) {
+          //   var data = wallpaperData['image'] as Map<String, dynamic>;
+          //   int height = data['height'] as int;
+          //   int width = data['width'] as int;
+          //   if (width / height > 1.0) {
+          //     qualifiedImage = wallpaperData['link'] as String;
+          //     cachedImages.addAll({title: qualifiedImage});
+          //     break;
+          //   }
+          // }
+          cachedImages.addAll({title: qualifiedImage});
+
           db.update(type, {'wallpaper' : qualifiedImage}, where: 'mal_id = ?' , whereArgs: [malId] , conflictAlgorithm: ConflictAlgorithm.replace);
           return qualifiedImage;
       }

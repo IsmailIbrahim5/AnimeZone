@@ -14,6 +14,7 @@ import '../../../../core/widgets/loading_widget.dart';
 import '../../domain/models/anime.dart';
 import '../../domain/models/element.dart' as elem;
 import '../pages/element_details.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RecommendationsPage extends ConsumerWidget {
   final elem.Element element;
@@ -69,7 +70,7 @@ class RecommendationsPage extends ConsumerWidget {
                             ),
                             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                             child: Text(
-                              '${data[index]['votes']} VOTES',
+                              '${data[index]['votes']} ${AppLocalizations.of(context)!.votes}',
                               style: outfitStyle.copyWith(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w900,

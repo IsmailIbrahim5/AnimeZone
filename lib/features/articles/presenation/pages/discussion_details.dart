@@ -437,9 +437,10 @@ class _DiscussionDetailsState extends ConsumerState<DiscussionDetails> {
       case 'stylized':
         String styleText = json['stylized']['style'] as String;
         double fontSize = style.fontSize ?? 12.0;
-        if (styleText.contains('font-size'))
+        if (styleText.contains('font-size')) {
           fontSize *=
               int.parse(styleText.split(' ').last.split('%').first) / 100;
+        }
         final list = List<Map<String, dynamic>>.from(
             (json['stylized'])['content'] as List);
 
@@ -585,8 +586,9 @@ class _DiscussionDetailsState extends ConsumerState<DiscussionDetails> {
         );
       case 'spoiler':
         if (spoilers[json.hashCode] == null) spoilers[json.hashCode] = false;
-        if (spoilersBuild[json.hashCode] == null)
+        if (spoilersBuild[json.hashCode] == null) {
           spoilersBuild[json.hashCode] = false;
+        }
         return WidgetSpan(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -594,8 +596,9 @@ class _DiscussionDetailsState extends ConsumerState<DiscussionDetails> {
               GestureDetector(
                 onTap: () => setState(() {
                   spoilers[json.hashCode] = !spoilers[json.hashCode]!;
-                  if (spoilers[json.hashCode]!)
+                  if (spoilers[json.hashCode]!) {
                     spoilersBuild[json.hashCode] = spoilers[json.hashCode]!;
+                  }
                 }),
                 child: Container(
                     decoration: BoxDecoration(

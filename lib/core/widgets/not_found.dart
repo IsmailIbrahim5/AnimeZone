@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../config/styles/styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotFound extends ConsumerWidget {
   const NotFound({super.key});
@@ -24,7 +25,7 @@ class NotFound extends ConsumerWidget {
           ),
           const SizedBox(height: 8.0,),
           Text(
-            "Couldn't find anything",
+            AppLocalizations.of(context)!.error,
             style: outfitStyle.copyWith(
                 color: theme.textColor,
                 fontWeight: FontWeight.w300

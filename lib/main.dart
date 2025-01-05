@@ -1,14 +1,23 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:animezone/config/styles/styles.dart';
 import 'package:animezone/core/providers/providers.dart';
 import 'package:animezone/core/widgets/splash_screen.dart';
+import 'package:animezone/main_screen.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'firebase_options.dart';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,33 +36,25 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
+  if(sharedPreferences.getString('locale') == null){
+    sharedPreferences.setString('locale', Platform.localeName);
+  }
   runApp(
+
     ProviderScope(
       overrides: [
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
         databaseProvider.overrideWithValue(database),
       ],
-      child: MaterialApp(
-        title: 'Anime Zone',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: primaryColor,
-          ),
-          primaryColor: primaryColor,
-          textSelectionTheme: TextSelectionThemeData(
-            selectionHandleColor: primaryColor.withOpacity(.75),
-            cursorColor: primaryColor.withOpacity(.75),
-            selectionColor: primaryColor.withOpacity(.25),
-          ),
-          useMaterial3: true,
-        ),
-        home: const SplashScreen(),
-        // routerDelegate: AppRouterDelegate(),
-        // routeInformationParser: AppRouteInformationParser(),
-        // scrollBehavior: MyCustomScrollBehavior(),
-      ),
-    ),
+      child: const MainScreen(),
+    )
   );
 }
 

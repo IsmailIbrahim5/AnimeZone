@@ -9,12 +9,13 @@ import '../../models/images.dart';
 class ImageRepository{
 
   final Dio dioClient;
-  final List<Image> cachedImages = [];
+  final Map<String, List<Image>> cachedImages = {};
   final List<Video> cachedVideos = [];
 
   ImageRepository({required this.dioClient});
 
   Future<List<Image>> getExtraImages({ required Uri uri}) async{
+    if(cachedImages[uri.toString()] != null) return cachedImages[uri.toString()]!;
     while(true) {
       try {
         final response = await dioClient.getUri(uri);
@@ -23,9 +24,7 @@ class ImageRepository{
               dynamic>)['data'] as List<dynamic>;
           List<Image> images = imagesData.map((e) =>
               Image.fromJson(e as Map<String, dynamic>)).toList();
-          for (Image image in images) {
-            if (!cachedImages.contains(image)) cachedImages.add(image);
-          }
+          cachedImages[uri.toString()] = images;
           return images;
         } else {
           throw HttpException(response.statusMessage ?? '');

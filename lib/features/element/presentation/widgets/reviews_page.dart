@@ -12,6 +12,7 @@ import '../../../../core/widgets/loading_widget.dart';
 import '../../domain/models/anime.dart';
 import '../../domain/models/review.dart';
 import '../../domain/models/element.dart' as elem;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReviewsPage extends ConsumerWidget {
   final elem.Element element;
@@ -115,23 +116,38 @@ class _ReviewWidgetState extends ConsumerState<ReviewWidget> {
                 const SizedBox(height: 8.0),
                 Container(
                   decoration: BoxDecoration(
-                    color: primaryColor,
+                      color: switch(widget.review.tags.first){
+                        'Recommended' => primaryColor,
+                        'Mixed Feelings' => Colors.deepPurple,
+                        'Not Recommended' => Colors.redAccent,
+                        _ => primaryColor,
+                      },
                     borderRadius: BorderRadius.circular(screenSize.width),
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(
-                        Icons.star_rounded,
-                        color: Colors.white,
+                       Icon(
+                        switch(widget.review.tags.first){
+                          'Recommended' => Icons.star_rounded,
+                          'Mixed Feelings' => Icons.question_mark_rounded,
+                          'Not Recommended' => Icons.mood_bad,
+                          _ => Icons.star_rounded,
+                        },
+                        color:Colors.white,
                         size: 14.0,
                       ),
                       const SizedBox(width: 4.0,),
                       Text(
-                        widget.review.tags.first,
+                        switch(widget.review.tags.first){
+                          'Recommended' => AppLocalizations.of(context)!.recommended,
+                          'Mixed Feelings' => AppLocalizations.of(context)!.mixedFeelings,
+                          'Not Recommended' => AppLocalizations.of(context)!.notRecommended,
+                          _ => '',
+                        },
                         style: montserratStyle.copyWith(
-                            color: Colors.white,
+                            color:Colors.white,
                             fontWeight: FontWeight.w800,
                             fontSize: 10.0
                         ),
@@ -198,7 +214,7 @@ class _ReviewWidgetState extends ConsumerState<ReviewWidget> {
                                   children: [
                                     const Icon(Icons.keyboard_arrow_down_rounded, color: primaryColor,),
                                     Text(
-                                      'Read More',
+                                      AppLocalizations.of(context)!.readMore,
                                       style: montserratStyle.copyWith(
                                         color: primaryColor,
                                         fontSize: 12.0,

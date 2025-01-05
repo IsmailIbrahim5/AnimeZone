@@ -6,6 +6,21 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$localeCodeHash() => r'514a76317fe5ae5523e9112bfa6949528c6f2517';
+
+/// See also [LocaleCode].
+@ProviderFor(LocaleCode)
+final localeCodeProvider =
+    AutoDisposeNotifierProvider<LocaleCode, String>.internal(
+  LocaleCode.new,
+  name: r'localeCodeProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$localeCodeHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$LocaleCode = AutoDisposeNotifier<String>;
 String _$applicationThemeHash() => r'eac5408f792641f441db2ddb5627f5390955b920';
 
 /// See also [ApplicationTheme].
@@ -23,4 +38,4 @@ final applicationThemeProvider =
 
 typedef _$ApplicationTheme = AutoDisposeNotifier<AppTheme>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

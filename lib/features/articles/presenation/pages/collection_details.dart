@@ -82,7 +82,7 @@ class _CollectionDetailsState extends ConsumerState<CollectionDetails> {
                   ),
                   Center(
                     child: Text(
-                      '${widget.tag.toUpperCase()} ${widget.type.toUpperCase()}',
+                      '${widget.tag.replaceAll('_', ' ').toUpperCase()} ${widget.type.toUpperCase()}',
                       style: outfitStyle.copyWith(
                         color: theme.titleTextColor,
                         fontWeight: FontWeight.w900,

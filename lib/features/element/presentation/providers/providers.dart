@@ -2,6 +2,7 @@ import 'package:animezone/core/models/images.dart';
 import 'package:animezone/features/element/data/repository/element_repository.dart';
 import 'package:animezone/features/articles/domain/models/news.dart';
 import 'package:animezone/features/element/domain/models/review.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/video.dart';
@@ -194,13 +195,13 @@ Future<List<Map<String,dynamic>>> recentRecommendations(
 
 @Riverpod(keepAlive: true)
 Future<List<Review>> recentReviews(
-    RecentReviewsRef ref , {required ElementType elementType}) {
+    Ref ref , {required ElementType elementType}) {
   return ref.read(elementRepositoryProvider).getRecentReviews(elementType: elementType);
 }
 
 @Riverpod(keepAlive: true)
 Future<List<Episode>> animeEpisodes(
-    AnimeEpisodesRef ref, {
+    Ref ref, {
       required int id
     }) {
   return ref.read(elementRepositoryProvider).getAnimeEpisodes(id);
@@ -209,13 +210,20 @@ Future<List<Episode>> animeEpisodes(
 
 @Riverpod(keepAlive: true)
 Future<Map<dynamic, dynamic>> animeThemes(
-    AnimeThemesRef ref, {
+    Ref ref, {
       required int id
     }) {
   return ref.read(elementRepositoryProvider).getAnimeThemes(id);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
+Future<String> currentSeason(
+    Ref ref) {
+  return ref.read(elementRepositoryProvider).getCurrentSeason();
+}
+
+
+@Riverpod(keepAlive: true)
 Future<String> elementWallpaper(
     ElementWallpaperRef ref, {
       required String title,

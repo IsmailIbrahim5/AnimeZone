@@ -12,6 +12,7 @@ import '../../../../config/styles/styles.dart';
 import '../../../../core/providers/providers.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../articles/presenation/pages/discussion_details.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewsPage extends ConsumerWidget {
   final int id;
@@ -58,7 +59,8 @@ class NewsPage extends ConsumerWidget {
             ),
             const SizedBox(height: 8.0,),
             Text(
-              "Couldn't find anything",
+              AppLocalizations.of(context)!.error,
+
               style: outfitStyle.copyWith(
                   color: theme.textColor,
                   fontWeight: FontWeight.w300

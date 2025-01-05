@@ -14,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/widgets/error.dart';
 import '../../../../core/widgets/not_found.dart';
 import '../widgets/collection_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class LibraryPage extends ConsumerStatefulWidget {
@@ -50,7 +51,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                           child:
                           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                             Text(
-                              'Anime',
+                              AppLocalizations.of(context)!.anime,
                               style: outfitStyle.copyWith(
                                   color: theme.titleTextColor,
                                   fontSize: 20.0,
@@ -60,15 +61,15 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                               highlightColor: theme.primaryColor.withOpacity(.1),
                               onTap: () => Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => CollectionDetails(
-                                    title: 'FAVORITE ANIME',
-                                    elementIds: animeFavoritesList.map((e) => int.parse(e),).toList(),
+                                  title: AppLocalizations.of(context)!.favoriteAnime,
+                                  elementIds: animeFavoritesList.map((e) => int.parse(e),).toList(),
                                   elementType: ElementType.anime,
                                 ),
                               )),
                               child: Padding(
                                 padding: const EdgeInsets.all(4.0),
                                 child: Text(
-                                  'MORE',
+                                  AppLocalizations.of(context)!.more,
                                   style: montserratStyle.copyWith(
                                     color: primaryColor.withOpacity(.6),
                                     fontSize: 12.0,
@@ -107,7 +108,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                 child:
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                   Text(
-                    'Manga',
+                    AppLocalizations.of(context)!.manga,
                     style: outfitStyle.copyWith(
                         color: theme.titleTextColor,
                         fontSize: 20.0,
@@ -117,7 +118,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                     highlightColor: theme.primaryColor.withOpacity(.1),
                     onTap: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CollectionDetails(
-                        title: 'FAVORITE MANGA',
+                        title: AppLocalizations.of(context)!.favoriteManga,
                         elementIds: mangaFavoritesList.map((e) => int.parse(e),).toList(),
                       elementType: ElementType.manga,
                       ),
@@ -125,7 +126,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Text(
-                        'MORE',
+                        AppLocalizations.of(context)!.more,
                         style: montserratStyle.copyWith(
                           color: primaryColor.withOpacity(.6),
                           fontSize: 12.0,
