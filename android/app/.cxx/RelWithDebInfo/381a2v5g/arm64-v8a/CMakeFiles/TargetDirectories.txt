@@ -1,0 +1,2 @@
+D:/ubuntu2/StudioProjects/AnimeZone/android/app/.cxx/RelWithDebInfo/381a2v5g/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/ubuntu2/StudioProjects/AnimeZone/android/app/.cxx/RelWithDebInfo/381a2v5g/arm64-v8a/CMakeFiles/rebuild_cache.dir

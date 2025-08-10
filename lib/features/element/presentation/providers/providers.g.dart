@@ -1908,6 +1908,140 @@ class _AnimeVideosProviderElement
   int get id => (origin as AnimeVideosProvider).id;
 }
 
+String _$animeStreamingHash() => r'6ceb3f1713d221d31dbbcbf61507ce736dd13505';
+
+/// See also [animeStreaming].
+@ProviderFor(animeStreaming)
+const animeStreamingProvider = AnimeStreamingFamily();
+
+/// See also [animeStreaming].
+class AnimeStreamingFamily
+    extends Family<AsyncValue<List<Map<String, dynamic>>>> {
+  /// See also [animeStreaming].
+  const AnimeStreamingFamily();
+
+  /// See also [animeStreaming].
+  AnimeStreamingProvider call({
+    required int id,
+  }) {
+    return AnimeStreamingProvider(
+      id: id,
+    );
+  }
+
+  @override
+  AnimeStreamingProvider getProviderOverride(
+    covariant AnimeStreamingProvider provider,
+  ) {
+    return call(
+      id: provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'animeStreamingProvider';
+}
+
+/// See also [animeStreaming].
+class AnimeStreamingProvider
+    extends FutureProvider<List<Map<String, dynamic>>> {
+  /// See also [animeStreaming].
+  AnimeStreamingProvider({
+    required int id,
+  }) : this._internal(
+          (ref) => animeStreaming(
+            ref as AnimeStreamingRef,
+            id: id,
+          ),
+          from: animeStreamingProvider,
+          name: r'animeStreamingProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$animeStreamingHash,
+          dependencies: AnimeStreamingFamily._dependencies,
+          allTransitiveDependencies:
+              AnimeStreamingFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  AnimeStreamingProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
+  final int id;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<Map<String, dynamic>>> Function(AnimeStreamingRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: AnimeStreamingProvider._internal(
+        (ref) => create(ref as AnimeStreamingRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  FutureProviderElement<List<Map<String, dynamic>>> createElement() {
+    return _AnimeStreamingProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is AnimeStreamingProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin AnimeStreamingRef on FutureProviderRef<List<Map<String, dynamic>>> {
+  /// The parameter `id` of this provider.
+  int get id;
+}
+
+class _AnimeStreamingProviderElement
+    extends FutureProviderElement<List<Map<String, dynamic>>>
+    with AnimeStreamingRef {
+  _AnimeStreamingProviderElement(super.provider);
+
+  @override
+  int get id => (origin as AnimeStreamingProvider).id;
+}
+
 String _$elementCharactersHash() => r'f264c528f154371d588358c5174e2dbe556d4212';
 
 /// See also [elementCharacters].

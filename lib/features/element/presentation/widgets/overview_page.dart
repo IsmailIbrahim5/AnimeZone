@@ -787,45 +787,61 @@ class _OverviewPageState extends ConsumerState<OverviewPage> {
                               throw Exception('Could not launch url');
                             }
                           },
-                          child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              clipBehavior: Clip.antiAlias,
-                              child: Image.asset(
-                                switch (data.streaming![index]['name']) {
-                                  'Netflix' => 'assets/images/netflix.jpg',
-                                  'Crunchyroll' =>
-                                    'assets/images/crunchyroll.jpg',
-                                  'Funimation' =>
-                                    'assets/images/funimation.jpg',
-                                  'Shahid' => 'assets/images/shahid.jpg',
-                                  'HIDIVE' => 'assets/images/hidive.jpg',
-                                  'Akiba Pass TV' =>
-                                    'assets/images/akiba_pass.jpg',
-                                  'Ani-One Asia' => 'assets/images/anione.jpg',
-                                  'Anime Digital Network' =>
-                                    'assets/images/adn.jpg',
-                                  'Aniplus TV' => 'assets/images/aniplus.jpg',
-                                  'Bilibili Global' =>
-                                    'assets/images/bilibili.jpg',
-                                  'iQIYI' => 'assets/images/iqiyi.jpg',
-                                  _ => '',
-                                },
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    const Background(),
-                                    Text(
-                                      data.streaming![index]['name'] as String,
-                                      style: outfitStyle.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              )),
+                          child: Builder(
+                            builder: (context) {
+                              final List<String> knownStreaming = [
+                                'Netflix',
+                                'Crunchyroll',
+                                'Funimation',
+                                'Shahid',
+                                'HIDIVE',
+                                'Akiba Pass TV',
+                                'Ani-One Asia',
+                                'Anime Digital Network',
+                                'Aniplus TV',
+                                'Bilibili Global',
+                                'iQIYI'
+                              ];
+                              return Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                  ),
+                                  clipBehavior: Clip.antiAlias,
+                                  child: data.streaming![index]['name'] == '' || !knownStreaming.contains(data.streaming![index]['name']) ? Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      const Background(),
+                                      Text(
+                                        data.streaming![index]['name'] as String,
+                                        style: outfitStyle.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white),
+                                      ),
+                                    ],
+                                  ):Image.asset(
+                                    switch (data.streaming![index]['name']) {
+                                      'Netflix' => 'assets/images/netflix.jpg',
+                                      'Crunchyroll' =>
+                                        'assets/images/crunchyroll.jpg',
+                                      'Funimation' =>
+                                        'assets/images/funimation.jpg',
+                                      'Shahid' => 'assets/images/shahid.jpg',
+                                      'HIDIVE' => 'assets/images/hidive.jpg',
+                                      'Akiba Pass TV' =>
+                                        'assets/images/akiba_pass.jpg',
+                                      'Ani-One Asia' => 'assets/images/anione.jpg',
+                                      'Anime Digital Network' =>
+                                        'assets/images/adn.jpg',
+                                      'Aniplus TV' => 'assets/images/aniplus.jpg',
+                                      'Bilibili Global' =>
+                                        'assets/images/bilibili.jpg',
+                                      'iQIYI' => 'assets/images/iqiyi.jpg',
+                                      _ => '',
+                                    },
+
+                                  ));
+                            }
+                          ),
                         );
                       })
                 ],

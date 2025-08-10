@@ -20,6 +20,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../config/styles/styles.dart';
 import '../../../../core/widgets/error.dart';
+import '../../../../core/widgets/safe_cached_image.dart';
 import '../../domain/models/manga.dart';
 import '../../domain/models/anime.dart';
 import 'element_details.dart';
@@ -184,8 +185,8 @@ class TopAnime extends ConsumerWidget {
                                   children: [
                                     const Background(),
                                     wallpaper.when(
-                                      data: (data) => CachedNetworkImage(
-                                        imageUrl: data ?? '',
+                                      data: (data) => SafeCachedImage(
+                                        imageUrl: data ,
                                         imageBuilder:
                                             (context, imageProvider) => Stack(
                                           fit: StackFit.expand,
@@ -199,7 +200,7 @@ class TopAnime extends ConsumerWidget {
                                             ),
                                           ],
                                         ),
-                                        placeholder: (context, url) =>
+                                        placeholder:
                                             const LoadingWidget(
                                           color: Colors.white,
                                         ),
@@ -208,7 +209,7 @@ class TopAnime extends ConsumerWidget {
                                         final pictures = ref.watch(elementPicturesProvider(
                                             id:  data.elements[index %  data.elements.length].malId,
                                             elementType: ElementType.anime));
-                                        return pictures.when(data: (data) =>CachedNetworkImage(
+                                        return pictures.when(data: (data) =>(data.first.largeImageUrl??data.first.imageUrl??'').isEmpty ? const SizedBox(): SafeCachedImage(
                                           imageUrl: data.first.largeImageUrl??data.first.imageUrl??'',
                                           imageBuilder:
                                               (context, imageProvider) => Stack(
@@ -223,7 +224,7 @@ class TopAnime extends ConsumerWidget {
                                               ),
                                             ],
                                           ),
-                                          placeholder: (context, url) =>
+                                          placeholder:
                                           const LoadingWidget(
                                             color: Colors.white,
                                           ),

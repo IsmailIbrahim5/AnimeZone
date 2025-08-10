@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/widgets/background.dart';
 import '../../../../core/widgets/loading_widget.dart';
+import '../../../../core/widgets/safe_cached_image.dart';
 import '../../domain/models/anime.dart';
 import '../../domain/models/element.dart' as elem;
 import '../pages/element_details.dart';
@@ -49,10 +50,10 @@ class RecommendationsPage extends ConsumerWidget {
                       fit: StackFit.expand,
                       children: [
                         const Background(),
-                        CachedNetworkImage(
+                        SafeCachedImage(
                           imageUrl: data[index]['entry']['images']['jpg']['image_url'] as String? ?? '',
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => const LoadingWidget(),
+                          placeholder: const LoadingWidget(),
                         ),
                         Align(
                           alignment: Alignment.bottomRight,

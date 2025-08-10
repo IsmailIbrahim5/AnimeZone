@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:animezone/core/models/video.dart';
 import 'package:animezone/core/providers/providers.dart';
 import 'package:animezone/features/element/domain/models/review.dart';
+import 'package:animezone/features/element/presentation/providers/providers.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
@@ -235,6 +236,18 @@ class ElementRepository{
 
   Future<Map<String,List<Video>>> getAnimeVideos(int id) async{
     return await ref.read(imagesProvider).getAnimeVideos(uri: ElementAPI.getAnimeVideos(id));
+  }
+
+  Future<List<Map<String,dynamic>>> getAnimeStreaming(int id) async{
+    final dioClient = ref.read(dioProvider);
+    final uri = ElementAPI.getAnimeStreaming(id);
+    final response = await dioClient.getUri(uri);
+    if(response.statusCode == HttpStatus.ok){
+      var streamingData = List<Map<String,dynamic>>.from((response.data as Map<String ,dynamic>)['data'] as List<dynamic>);
+      return streamingData;
+    }else{
+      throw HttpException(response.statusMessage??'');
+    }
   }
 
   Future<List<dynamic>> getElementGenres({required ElementType elementType}) async{

@@ -1,3 +1,4 @@
+import 'package:animezone/core/widgets/safe_cached_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,10 +31,10 @@ class FullImageView extends ConsumerWidget {
                     decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular((1 - animation.value) * 16.0),
                       ),
-                    child: CachedNetworkImage(
+                    child: SafeCachedImage(
                         imageUrl: imageUrl,
                         fit: BoxFit.cover,
-                        placeholder: (context, url) =>const AspectRatio(
+                        placeholder: const AspectRatio(
                           aspectRatio: 0.7,
                           child: Stack(
                             children: [

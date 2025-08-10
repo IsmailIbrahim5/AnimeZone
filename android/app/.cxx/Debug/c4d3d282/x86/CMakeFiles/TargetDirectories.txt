@@ -1,0 +1,2 @@
+C:/Users/Ismae/StudioProjects/AnimeZone/android/app/.cxx/Debug/c4d3d282/x86/CMakeFiles/edit_cache.dir
+C:/Users/Ismae/StudioProjects/AnimeZone/android/app/.cxx/Debug/c4d3d282/x86/CMakeFiles/rebuild_cache.dir

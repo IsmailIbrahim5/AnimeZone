@@ -7,6 +7,7 @@ import '../../../../core/providers/providers.dart';
 import '../../../../core/widgets/background.dart';
 import '../../../../core/widgets/error.dart';
 import '../../../../core/widgets/loading_widget.dart';
+import '../../../../core/widgets/safe_cached_image.dart';
 import '../../../element/data/repository/element_repository.dart';
 import '../../../element/presentation/providers/providers.dart';
 import '../pages/collection_details.dart';
@@ -75,7 +76,7 @@ class CollectionWidget extends ConsumerWidget {
       fit: StackFit.expand,
       children: [
         const Background(),
-        ref.watch(elementPicturesProvider(id: animeId??0 , elementType: elementType)).when(data: (data) => CachedNetworkImage(imageUrl: data.first.largeImageUrl ?? '' , fit: BoxFit.cover,), error: (error, stackTrace) =>const Error1(),loading: () => const LoadingWidget(),),
+        ref.watch(elementPicturesProvider(id: animeId??0 , elementType: elementType)).when(data: (data) => SafeCachedImage(imageUrl: data.first.largeImageUrl ?? '' , fit: BoxFit.cover,), error: (error, stackTrace) =>const SizedBox() ,loading: () => const LoadingWidget(),),
       ],
     );
   }

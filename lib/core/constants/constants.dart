@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 final mainNavigatorKey = GlobalKey<NavigatorState>();
 
 const JIKANAPIBaseUrl = 'api.jikan.moe';
-const APIBaseUrl = 'anime-zone-server.glitch.me';
+const APIBaseUrl = 'anime-zone-server.vercel.app';
 
 
 const CSAPIBaseUrl = 'www.googleapis.com';

@@ -36,24 +36,31 @@ class _ElementSearchState extends ConsumerState<ElementSearch> {
   String q = '';
 
   @override
+  void dispose() {
+    request?.cancel();
+    super.dispose();
+  }
+  @override
   void initState() {
     super.initState();
     widget.controller.addListener(
       () {
-        if (request != null && request!.isActive) request!.cancel();
+        if (request != null && request!.isActive) request?.cancel();
 
         request = Timer(
           const Duration(seconds: 1),
           () {
-            setState(() {
-              if (widget.controller.text.isNotEmpty) {
-                q = widget.controller.text;
-              } else {
-                q = '';
-              }
-              cachedPage = null;
-              page = 1;
-            });
+            if(mounted) {
+              setState(() {
+                if (widget.controller.text.isNotEmpty) {
+                  q = widget.controller.text;
+                } else {
+                  q = '';
+                }
+                cachedPage = null;
+                page = 1;
+              });
+            }
           },
         );
       },
@@ -66,6 +73,7 @@ class _ElementSearchState extends ConsumerState<ElementSearch> {
      });
 
   }
+
 
   Timer? request;
   late final SearchControls searchControls;

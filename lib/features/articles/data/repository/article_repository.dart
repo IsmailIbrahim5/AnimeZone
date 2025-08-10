@@ -15,6 +15,7 @@ class ArticleRepository{
   Future<NewsContainer> getTagNews ({String filters = '' , required String tag , int? page})=> getNews(ArticleApi.getTagNews(filters: filters , tag: tag,page: page));
 
   Future<NewsContainer> getNews(Uri url)async{
+    print(url);
     final dio = ref.read(dioProvider);
 
     try {

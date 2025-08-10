@@ -30,6 +30,9 @@ class MainScreen extends ConsumerWidget {
         useMaterial3: true,
       ),
       home: const SplashScreen(),
+      builder: (context, child) {
+        return Directionality(textDirection: TextDirection.ltr, child: child!);
+      },
       // routerDelegate: AppRouterDelegate(),
       // routeInformationParser: AppRouteInformationParser(),
       // scrollBehavior: MyCustomScrollBehavior(),

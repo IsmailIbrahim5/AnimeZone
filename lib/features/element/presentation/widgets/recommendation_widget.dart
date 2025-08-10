@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import '../../../../core/providers/providers.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../../core/widgets/safe_cached_image.dart';
+
 class RecommendationWidget extends ConsumerWidget {
   final Map<String,dynamic> recommendation;
   final ElementType elementType;
@@ -46,7 +48,7 @@ class RecommendationWidget extends ConsumerWidget {
                             aspectRatio: .75,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(12.0),
-                              child: CachedNetworkImage(
+                              child: SafeCachedImage(
                                 imageUrl: list.first['images']['jpg']['image_url'] as String? ??'',
 
                                 fit: BoxFit.cover,
@@ -85,7 +87,7 @@ class RecommendationWidget extends ConsumerWidget {
                             aspectRatio: .75,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(12.0),
-                              child: CachedNetworkImage(
+                              child: SafeCachedImage(
                                 imageUrl: list.last['images']['jpg']['image_url'] as String? ??'',
 
                                 fit: BoxFit.cover,

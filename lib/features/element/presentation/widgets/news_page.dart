@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import '../../../../config/styles/styles.dart';
 import '../../../../core/providers/providers.dart';
 import '../../../../core/widgets/loading_widget.dart';
+import '../../../../core/widgets/safe_cached_image.dart';
 import '../../../articles/presenation/pages/discussion_details.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -111,10 +112,10 @@ class _NewsWidgetState extends ConsumerState<NewsWidget> {
                 ),
 
                 clipBehavior: Clip.antiAlias,
-                child: CachedNetworkImage(
+                child: SafeCachedImage(
                   imageUrl: widget.news.image.imageUrl ?? '',
-                  placeholder: (context, url) =>  const LoadingWidget(color: primaryColor,),
-                  errorWidget: (context, url, error) => const Background(),
+                  placeholder:  const LoadingWidget(color: primaryColor,),
+                  errorWidget: const Background(),
                   fit: BoxFit.cover,
                 ),
               ),

@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../config/styles/styles.dart';
 import '../providers/providers.dart';
 import 'cross_fade_switcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationOverlay extends ConsumerStatefulWidget {
   final OverlayEntry overlayEntry;
@@ -72,7 +73,7 @@ class _NotificationOverlayState extends ConsumerState<NotificationOverlay> {
                         Transform.scale(
                           scale:Curves.easeOutBack.transform(values[5]),
                           child: Text(
-                            'Permission Failed!',
+                            AppLocalizations.of(context)!.error2,
                             style: outfitStyle.copyWith(
                                 color: theme.titleTextColor,
                                 fontWeight: FontWeight.w800,
@@ -84,7 +85,7 @@ class _NotificationOverlayState extends ConsumerState<NotificationOverlay> {
                         Transform.scale(
                           scale:Curves.easeOutBack.transform(values[6]),
                           child: Text(
-                            'You rejected the notification permission, open settings to enable it',
+                            AppLocalizations.of(context)!.message3,
                             textAlign: TextAlign.center,
                             style: outfitStyle.copyWith(
                                 color: theme.textColor,
@@ -108,7 +109,7 @@ class _NotificationOverlayState extends ConsumerState<NotificationOverlay> {
                               await FirebaseMessaging.instance
                                   .subscribeToTopic(
                                   'RecentNews');
-                              controller.reverse!();
+                              controller.reverse?.call();
                             }
                           },
                           child: Transform.scale(
@@ -128,7 +129,7 @@ class _NotificationOverlayState extends ConsumerState<NotificationOverlay> {
                               padding: const EdgeInsets.symmetric(vertical: 12.0),
                               alignment: Alignment.center,
                               child: Text(
-                                'Open Settings',
+                                AppLocalizations.of(context)!.openSettings,
                                 style: outfitStyle.copyWith(
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -140,7 +141,7 @@ class _NotificationOverlayState extends ConsumerState<NotificationOverlay> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            controller.reverse!();
+                            controller.reverse?.call();
                           },
                           child: Transform.scale(
                             scale:Curves.easeOutBack.transform(values[8]),
@@ -148,7 +149,7 @@ class _NotificationOverlayState extends ConsumerState<NotificationOverlay> {
                               alignment: Alignment.center,
                               padding: const EdgeInsets.symmetric(vertical: 12.0),
                               child: Text(
-                                'Ask Later',
+                                AppLocalizations.of(context)!.askLater,
                                 style: outfitStyle.copyWith(
                                     color: theme.hintTextColor,
                                     fontSize: 14.0,
@@ -161,7 +162,7 @@ class _NotificationOverlayState extends ConsumerState<NotificationOverlay> {
                         GestureDetector(
                           onTap: () {
                             ref.read(sharedPreferencesProvider).setBool('never_ask_again', true);
-                            controller.reverse!();
+                            controller.reverse?.call();
                           },
                           child: Transform.scale(
                             scale:Curves.easeOutBack.transform(values[8]),
@@ -169,7 +170,7 @@ class _NotificationOverlayState extends ConsumerState<NotificationOverlay> {
                               alignment: Alignment.center,
                               padding: const EdgeInsets.symmetric(vertical: 12.0),
                               child: Text(
-                                'Never Ask Again',
+                                AppLocalizations.of(context)!.neverAskAgain,
                                 style: outfitStyle.copyWith(
                                     color: red,
                                     fontSize: 14.0,
@@ -197,7 +198,7 @@ class _NotificationOverlayState extends ConsumerState<NotificationOverlay> {
                         Transform.scale(
                           scale:Curves.easeOutBack.transform(values[5]),
                           child: Text(
-                            'Subscribe to recent news',
+                            AppLocalizations.of(context)!.subscribeTitle,
                             style: outfitStyle.copyWith(
                                 color: theme.titleTextColor,
                                 fontWeight: FontWeight.w800,
@@ -209,7 +210,7 @@ class _NotificationOverlayState extends ConsumerState<NotificationOverlay> {
                         Transform.scale(
                           scale:Curves.easeOutBack.transform(values[6]),
                           child: Text(
-                            'Would you like to receive notifications about the latest anime & manga news and stay updated?',
+                            AppLocalizations.of(context)!.subscribeBody,
                             textAlign: TextAlign.center,
                             style: outfitStyle.copyWith(
                                 color: theme.textColor,
@@ -225,11 +226,20 @@ class _NotificationOverlayState extends ConsumerState<NotificationOverlay> {
                       children: [
                         GestureDetector(
                           onTap: () async{
-                            NotificationSettings settings = await FirebaseMessaging.instance.requestPermission();
-                            if(settings.authorizationStatus == AuthorizationStatus.authorized) {
-                              await FirebaseMessaging.instance.subscribeToTopic(
-                                  'RecentNews');
-                            }else{
+                            try {
+                              NotificationSettings settings = await FirebaseMessaging
+                                  .instance.requestPermission();
+                              if (settings.authorizationStatus ==
+                                  AuthorizationStatus.authorized) {
+                                await FirebaseMessaging.instance
+                                    .subscribeToTopic(
+                                    'RecentNews');
+                                controller.reverse?.call();
+                              } else {
+                                permissionFail = true;
+                                widget.overlayEntry.markNeedsBuild();
+                              }
+                            }catch(e){
                               permissionFail = true;
                               widget.overlayEntry.markNeedsBuild();
                             }
@@ -251,7 +261,7 @@ class _NotificationOverlayState extends ConsumerState<NotificationOverlay> {
                               padding: const EdgeInsets.symmetric(vertical: 12.0),
                               alignment: Alignment.center,
                               child: Text(
-                                'Yes, I would like to stay updated',
+                                AppLocalizations.of(context)!.subscribeButton1,
                                 style: outfitStyle.copyWith(
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -263,7 +273,7 @@ class _NotificationOverlayState extends ConsumerState<NotificationOverlay> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            controller.reverse!();
+                            controller.reverse?.call();
                           },
                           child: Transform.scale(
                             scale:Curves.easeOutBack.transform(values[8]),
@@ -271,7 +281,7 @@ class _NotificationOverlayState extends ConsumerState<NotificationOverlay> {
                               alignment: Alignment.center,
                               padding: const EdgeInsets.symmetric(vertical: 12.0),
                               child: Text(
-                                'No, I don\'t want that',
+                                AppLocalizations.of(context)!.subscribeButton2,
                                 style: outfitStyle.copyWith(
                                     color: theme.hintTextColor,
                                     fontSize: 14.0,

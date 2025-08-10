@@ -15,6 +15,8 @@ import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/full_image_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../../core/widgets/safe_cached_image.dart';
+
 class MediaPage extends ConsumerWidget {
   final int id;
   final ElementType elementType;
@@ -90,11 +92,11 @@ class MediaPage extends ConsumerWidget {
                                           borderRadius:
                                               BorderRadius.circular(16.0),
                                           color: theme.foregroundColor),
-                                      child: CachedNetworkImage(
+                                      child: SafeCachedImage(
                                         imageUrl: data[(row * 2) + column]
                                             .largeImageUrl!,
                                         fit: BoxFit.cover,
-                                        placeholder: (context, url) =>
+                                        placeholder:
                                             const AspectRatio(
                                           aspectRatio: 0.7,
                                           child: Stack(
@@ -180,7 +182,7 @@ class MediaPage extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CachedNetworkImage(
+                        SafeCachedImage(
                           imageUrl:
                               list[index].trailer?.images?.largeImageUrl ?? '',
                           imageBuilder: (context, imageProvider) => Stack(
@@ -207,7 +209,7 @@ class MediaPage extends ConsumerWidget {
                               )
                             ],
                           ),
-                          placeholder: (context, url) => const AspectRatio(
+                          placeholder: const AspectRatio(
                             aspectRatio: 1.5,
                             child: Stack(
                               children: [
@@ -290,7 +292,7 @@ class MediaPage extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CachedNetworkImage(
+                        SafeCachedImage(
                           imageUrl:
                           list[index].trailer?.images?.largeImageUrl ?? '',
                           imageBuilder: (context, imageProvider) => Stack(
@@ -317,7 +319,7 @@ class MediaPage extends ConsumerWidget {
                               )
                             ],
                           ),
-                          placeholder: (context, url) => const AspectRatio(
+                          placeholder:  const AspectRatio(
                             aspectRatio: 1.5,
                             child: Stack(
                               children: [

@@ -5,6 +5,7 @@ import 'package:animezone/features/element/data/repository/element_repository.da
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/widgets/banner_ad.dart';
 import '../../../element/presentation/widgets/element_widget.dart';
 
 class CollectionDetails extends ConsumerStatefulWidget {
@@ -123,7 +124,11 @@ class _CollectionDetailsState extends ConsumerState<CollectionDetails> {
     ElementWidget2(id: widget.elementIds[index], elementType: widget.elementType,),
     ),
     )
-          )
+          ),
+          const MyBannerAd(
+              screenName: 'collection'
+          ),
+
         ],
       ),
     );

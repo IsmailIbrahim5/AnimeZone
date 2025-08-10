@@ -1,17 +1,20 @@
 import 'package:animezone/config/styles/styles.dart';
+import 'package:animezone/core/pages/disclaimer_screen.dart';
+import 'package:animezone/core/providers/providers.dart';
 import 'package:animezone/core/widgets/sequence_animation_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../pages/home_screen.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
   final String anime = 'ANIME';
   final String zone = 'ZONE';
   final String japanese = '\nアニメゾーン';
@@ -28,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/background1.jpg',
+              'assets/images/background.jpg',
               fit: BoxFit.cover,
             ),
           ),
@@ -41,13 +44,16 @@ class _SplashScreenState extends State<SplashScreen> {
             endCallback: () {
               Future.delayed(
                 const Duration(seconds: 2),
-                () => Navigator.pushReplacement(
+                () {
+                  final initialized = ref.read(sharedPreferencesProvider).getBool('initialized')?? false;
+                  return Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
                           FadeTransition(
-                              opacity: animation, child: const HomeScreen()),
-                    )),
+                              opacity: animation, child: initialized ? const HomeScreen() : const DisclaimerScreen()),
+                    ));
+                },
               );
             },
             builder: (values, [child]) => Stack(

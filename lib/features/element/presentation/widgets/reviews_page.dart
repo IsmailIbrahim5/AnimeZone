@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/widgets/error.dart';
 import '../../../../core/widgets/loading_widget.dart';
+import '../../../../core/widgets/safe_cached_image.dart';
 import '../../domain/models/anime.dart';
 import '../../domain/models/review.dart';
 import '../../domain/models/element.dart' as elem;
@@ -87,9 +88,9 @@ class _ReviewWidgetState extends ConsumerState<ReviewWidget> {
             ),
 
             clipBehavior: Clip.antiAlias,
-            child: CachedNetworkImage(
+            child: SafeCachedImage(
               imageUrl: widget.review.user['images']['jpg']['image_url'] as String? ?? '',
-              placeholder: (context, url) =>  const LoadingWidget(color: primaryColor,),
+              placeholder: const LoadingWidget(color: primaryColor,),
               fit: BoxFit.cover,
             ),
           ),

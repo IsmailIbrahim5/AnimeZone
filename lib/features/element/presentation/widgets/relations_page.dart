@@ -10,6 +10,7 @@ import '../../../../config/styles/styles.dart';
 import '../../../../core/widgets/background.dart';
 import '../../../../core/widgets/error.dart';
 import '../../../../core/widgets/loading_widget.dart';
+import '../../../../core/widgets/safe_cached_image.dart';
 import '../pages/element_details.dart';
 
 class RelationsPage extends ConsumerStatefulWidget {
@@ -122,10 +123,10 @@ class _RelationsPageState extends ConsumerState<RelationsPage> {
                                 fit: StackFit.expand,
                                 children: [
                                   const Background(),
-                                  image.when(data: (data) => CachedNetworkImage(
+                                  image.when(data: (data) => SafeCachedImage(
                                     imageUrl: data.first.imageUrl!,
                                     fit: BoxFit.cover,
-                                    placeholder: (context, url) => const LoadingWidget(),
+                                    placeholder:  const LoadingWidget(),
                                   ), error: (error, stackTrace) => const SizedBox(), loading: () => const LoadingWidget(),),
                                   Align(
                                     alignment: Alignment.bottomRight,

@@ -9,6 +9,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/widgets/safe_cached_image.dart';
 import '../../domain/models/manga.dart';
 import '../../domain/models/anime.dart';
 import '../../domain/models/element.dart' as elem;
@@ -79,11 +80,12 @@ class _ElementWidget1State extends ConsumerState<ElementWidget1> {
                   fit: StackFit.expand,
                   children: [
                     const Background(),
-                    CachedNetworkImage(
-                      imageUrl: element.image.largeImageUrl!,
+                    SafeCachedImage(
+                      imageUrl: element.image.largeImageUrl,
                       fit: BoxFit.cover,
-                      placeholder: (context, url) => const LoadingWidget(),
+                      placeholder: const LoadingWidget(),
                     ),
+                    if(element.type!= null)
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Container(
@@ -250,10 +252,10 @@ class _ElementWidget2State extends ConsumerState<ElementWidget2> {
               fit: StackFit.expand,
               children: [
                 const Background(),
-                CachedNetworkImage(
+                SafeCachedImage(
                   imageUrl: element.image.largeImageUrl!,
                   fit: BoxFit.cover,
-                  placeholder: (context, url) => const LoadingWidget(),
+                  placeholder:const LoadingWidget(),
                 ),
               ],
             ),

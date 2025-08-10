@@ -1,4 +1,5 @@
 import 'package:animezone/core/providers/providers.dart';
+import 'package:animezone/core/widgets/banner_ad.dart';
 import 'package:animezone/core/widgets/pagination_widget.dart';
 import 'package:animezone/features/articles/domain/models/news.dart';
 import 'package:animezone/features/articles/presenation/providers/providers.dart';
@@ -48,100 +49,110 @@ class _CollectionDetailsState extends ConsumerState<CollectionDetails> {
       color: theme.backgroundColor,
       child: Column(
         children: [
-          SizedBox(
-            height: screenSize.height * (7 / 63),
-            child: Padding(
-              padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: theme.foregroundColor,
-                        borderRadius: BorderRadius.circular(18.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: accentColor.withOpacity(.25),
-                            blurRadius: 8.0,
-                          )
-                        ],
-                      ),
-                      margin: const EdgeInsets.only(left: 16.0),
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          color: primaryColor,
-                          size: 22.0,
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      '${widget.tag.replaceAll('_', ' ').toUpperCase()} ${widget.type.toUpperCase()}',
-                      style: outfitStyle.copyWith(
-                        color: theme.titleTextColor,
-                        fontWeight: FontWeight.w900,
-                        wordSpacing: 4.0,
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
           Expanded(
-            child: Stack(
+            child: Column(
               children: [
-                provider.when(
-                  data: (data) {
-                    if(cachedPage == null){
-                      setState(() {
-                        cachedPage = data.lastVisiblePage as int;
-                      });
-                    }
-                    return ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      itemCount: data.data.length as int? ??0,
-                      itemBuilder: (context, index) =>Padding(
-
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: switch(data.data[index]){
-                          News news => NewsWidget(news: news,),
-                          Forum forum => ForumWidget(forum: forum,),
-                          _ => const SizedBox()
-                        },
-                      ),
-                    );
-                  },
-                  error: (error, stackTrace) => const Error1(),
-                  loading: () => const LoadingWidget(
-                    color: primaryColor,
+                SizedBox(
+                  height: screenSize.height * (7 / 63),
+                  child: Padding(
+                    padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: theme.foregroundColor,
+                              borderRadius: BorderRadius.circular(18.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: accentColor.withOpacity(.25),
+                                  blurRadius: 8.0,
+                                )
+                              ],
+                            ),
+                            margin: const EdgeInsets.only(left: 16.0),
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.arrow_back_ios_new_rounded,
+                                color: primaryColor,
+                                size: 22.0,
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            '${widget.tag.replaceAll('_', ' ').toUpperCase()} ${widget.type.toUpperCase()}',
+                            style: outfitStyle.copyWith(
+                              color: theme.titleTextColor,
+                              fontWeight: FontWeight.w900,
+                              wordSpacing: 4.0,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-                Positioned(
-                  bottom: 16.0,
-                  right: 0,
-                  left: 0,
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 400),
-                    switchInCurve:Curves.easeOutBack,
-                    transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: FadeTransition(opacity: animation, child: child,),),
-                    child: cachedPage != null ?  Pagination(
-                    callback: (index) => setState(() {
-                      page = index;
-                    }),
-                    length: cachedPage!,
-                  ): const SizedBox(),)
-                )
+                Expanded(
+                  child: Stack(
+                    children: [
+                      provider.when(
+                        data: (data) {
+                          if(cachedPage == null){
+                            setState(() {
+                              cachedPage = data.lastVisiblePage as int;
+                            });
+                          }
+                          return ListView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            itemCount: data.data.length as int? ??0,
+                            itemBuilder: (context, index) =>Padding(
+
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: switch(data.data[index]){
+                                News news => NewsWidget(news: news,),
+                                Forum forum => ForumWidget(forum: forum,),
+                                _ => const SizedBox()
+                              },
+                            ),
+                          );
+                        },
+                        error: (error, stackTrace) => const Error1(),
+                        loading: () => const LoadingWidget(
+                          color: primaryColor,
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 16.0,
+                        right: 0,
+                        left: 0,
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 400),
+                          switchInCurve:Curves.easeOutBack,
+                          transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: FadeTransition(opacity: animation, child: child,),),
+                          child: cachedPage != null ?  Pagination(
+                          callback: (index) => setState(() {
+                            page = index;
+                          }),
+                          length: cachedPage!,
+                        ): const SizedBox(),)
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
-          )
+          ),
+          const MyBannerAd(
+            screenName: 'news_collection'
+          ),
+
         ],
       ),
     );

@@ -14,6 +14,8 @@ import '../../../../core/providers/providers.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../../core/widgets/safe_cached_image.dart';
+
 class CharactersPage extends ConsumerWidget {
   final int id;
   final ElementType elementType;
@@ -134,12 +136,12 @@ class CharactersPage extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(12.0),
                             ),
 
-                                child: CachedNetworkImage(
+                                child: SafeCachedImage(
                                   imageUrl: characters[index]['character']
                                               ['images']['jpg']['image_url']
                                           as String? ??
                                       '',
-                                  placeholder: (context, url) =>
+                                  placeholder:
                                      _loading,
                                   fit: BoxFit.cover,
                                 ),

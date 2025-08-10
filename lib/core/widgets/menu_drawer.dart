@@ -24,7 +24,9 @@ class _MenuDrawerState extends ConsumerState<MenuDrawer> with SingleTickerProvid
   List<String> languages = [];
 
   final List<String> localeStrings = [
+    'ar',
     'en',
+    'fr',
     'es',
     'pt',
     'hi'
@@ -51,7 +53,9 @@ class _MenuDrawerState extends ConsumerState<MenuDrawer> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     languages = [
+      AppLocalizations.of(context)!.arabic,
       AppLocalizations.of(context)!.english,
+      AppLocalizations.of(context)!.french,
       AppLocalizations.of(context)!.spanish,
       AppLocalizations.of(context)!.potuguese,
       AppLocalizations.of(context)!.hindi,
@@ -63,7 +67,7 @@ class _MenuDrawerState extends ConsumerState<MenuDrawer> with SingleTickerProvid
       alignment: Alignment.centerLeft,
       child: Container(
         width: screenSize.width * .7,
-        height: screenSize.height * .7,
+        height: screenSize.height * .9,
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.horizontal(right: Radius.circular(48.0))
         ),

@@ -46,15 +46,19 @@ class _BottomAppBarState6 extends ConsumerState<BottomAppBar6>
     widget.controller.addListener((){
       if((widget.controller.page ?? 0.0 ) < page) {
         if (widget.controller.page?.floor() != currentIndex) {
-          setState(() {
-            currentIndex = widget.controller.page!.floor();
-          });
+          if(mounted) {
+            setState(() {
+              currentIndex = widget.controller.page!.floor();
+            });
+          }
         }
       }else{
         if (widget.controller.page?.ceil() != currentIndex) {
-          setState(() {
-            currentIndex = widget.controller.page!.ceil();
-          });
+          if(mounted) {
+            setState(() {
+              currentIndex = widget.controller.page!.ceil();
+            });
+          }
         }
       }
       page = widget.controller.page??0.0;

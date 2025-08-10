@@ -9,6 +9,7 @@ import 'package:animezone/features/articles/presenation/providers/providers.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/widgets/banner_ad.dart';
 import '../../../../core/widgets/error.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -19,40 +20,49 @@ class ArticlePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final screenSize = MediaQuery.sizeOf(context);
     final currentSeason = ref.watch(currentSeasonProvider);
-    return Padding(
-      padding: EdgeInsets.only(bottom: screenSize.height * (6 / 63)),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 16),
-            const RecentNews(),
-            const SizedBox(height: 32),
-            TagNews(
-              tag: 'new_anime',
-              title: AppLocalizations.of(context)!.newAnimeNews,
-            ),
-            const SizedBox(height: 32),
-            currentSeason.when(
-              data: (data) => TagNews(
-                tag: data.toLowerCase().replaceAll(' ', '_'),
-                title: data,
+    return Column(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: screenSize.height * (6 / 63)),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 16),
+                  const RecentNews(),
+                  const SizedBox(height: 32),
+                  TagNews(
+                    tag: 'new_anime',
+                    title: AppLocalizations.of(context)!.newAnimeNews,
+                  ),
+                  const SizedBox(height: 32),
+                  currentSeason.when(
+                    data: (data) => TagNews(
+                      tag: data.toLowerCase().replaceAll(' ', '_'),
+                      title: data,
+                    ),
+                    error: (error, stackTrace) => const SizedBox(),
+                    loading: () => const LoadingWidget(color: primaryColor,),
+                  ),
+                  const SizedBox(height: 32),
+                  const RecentForums(),
+                  const SizedBox(height: 32),
+                  const NewForums(
+                    type: 'anime',
+                  ),
+                  const SizedBox(height: 32),
+                  const NewForums(
+                    type: 'manga',
+                  ),
+                ],
               ),
-              error: (error, stackTrace) => const SizedBox(),
-              loading: () => const LoadingWidget(color: primaryColor,),
             ),
-            const SizedBox(height: 32),
-            const RecentForums(),
-            const SizedBox(height: 32),
-            const NewForums(
-              type: 'anime',
-            ),
-            const SizedBox(height: 32),
-            const NewForums(
-              type: 'manga',
-            ),
-          ],
+          ),
         ),
-      ),
+        const MyBannerAd(
+          screenName: 'news',
+        ),
+      ],
     );
   }
 }

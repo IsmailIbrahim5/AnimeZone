@@ -12,7 +12,9 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 import '../../../../config/styles/styles.dart';
+import '../../../../core/widgets/banner_ad.dart';
 import '../../../../core/widgets/error.dart';
+import '../../../../core/widgets/safe_cached_image.dart';
 import '../providers/providers.dart';
 
 class DiscussionDetails extends ConsumerStatefulWidget {
@@ -37,190 +39,200 @@ class _DiscussionDetailsState extends ConsumerState<DiscussionDetails> {
     print(page);
     final screenSize = MediaQuery.sizeOf(context);
     return Material(
-      child: Stack(
+      child: Column(
         children: [
-          const Background(),
-          Positioned(
-              left: 16.0,
-              right: 16.0,
-              top: 0,
-              bottom: 0,
-              child: SingleChildScrollView(
-                controller: _controller,
-                padding: EdgeInsets.only(top: screenSize.height * .125),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    cachedDiscussion == null
-                        ? discussion.when(
+          Expanded(
+            child: Stack(
+              children: [
+                const Background(),
+                Positioned(
+                    left: 16.0,
+                    right: 16.0,
+                    top: 0,
+                    bottom: 0,
+                    child: SingleChildScrollView(
+                      controller: _controller,
+                      padding: EdgeInsets.only(top: screenSize.height * .125),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          cachedDiscussion == null
+                              ? discussion.when(
+                                  data: (data) {
+                                    cachedDiscussion ??= data;
+                                    return Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        _buildMainContainer(cachedDiscussion!.topic),
+                                        Container(
+                                          height: 6.0,
+                                          width: screenSize.width * .35,
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 16.0),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(3.0),
+                                              color: theme.foregroundColor),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                  error: (error, stackTrace) => const Error1(),
+                                  loading: () => const Center(child: LoadingWidget()),
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    _buildMainContainer(cachedDiscussion!.topic),
+                                    Container(
+                                      height: 6.0,
+                                      width: screenSize.width * .35,
+                                      margin:
+                                          const EdgeInsets.symmetric(vertical: 16.0),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(3.0),
+                                          color: theme.foregroundColor),
+                                    ),
+                                  ],
+                                ),
+                          discussion.when(
                             data: (data) {
-                              cachedDiscussion ??= data;
                               return Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  _buildMainContainer(cachedDiscussion!.topic),
-                                  Container(
-                                    height: 6.0,
-                                    width: screenSize.width * .35,
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 16.0),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(3.0),
-                                        color: theme.foregroundColor),
-                                  ),
+                                  ...List.generate(
+                                    data.replies.length,
+                                    (index) => Padding(
+                                      padding: const EdgeInsets.only(bottom: 16.0),
+                                      child: _buildMainContainer(data.replies[index]),
+                                    ),
+                                  )
                                 ],
                               );
                             },
                             error: (error, stackTrace) => const Error1(),
                             loading: () => const Center(child: LoadingWidget()),
-                          )
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              _buildMainContainer(cachedDiscussion!.topic),
-                              Container(
-                                height: 6.0,
-                                width: screenSize.width * .35,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 16.0),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3.0),
-                                    color: theme.foregroundColor),
-                              ),
+                          ),
+                        ],
+                      ),
+                    )),
+                Positioned(
+                  top: 32.0,
+                  left: 0,
+                  right: 0,
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: theme.foregroundColor,
+                            borderRadius: BorderRadius.circular(18.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: accentColor.withOpacity(.25),
+                                blurRadius: 8.0,
+                              )
                             ],
                           ),
-                    discussion.when(
-                      data: (data) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            ...List.generate(
-                              data.replies.length,
-                              (index) => Padding(
-                                padding: const EdgeInsets.only(bottom: 16.0),
-                                child: _buildMainContainer(data.replies[index]),
-                              ),
-                            )
-                          ],
-                        );
-                      },
-                      error: (error, stackTrace) => const Error1(),
-                      loading: () => const Center(child: LoadingWidget()),
-                    ),
-                  ],
-                ),
-              )),
-          Positioned(
-            top: 32.0,
-            left: 0,
-            right: 0,
-            child: Row(
-              children: [
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: theme.foregroundColor,
-                      borderRadius: BorderRadius.circular(18.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: accentColor.withOpacity(.25),
-                          blurRadius: 8.0,
-                        )
-                      ],
-                    ),
-                    margin: const EdgeInsets.only(left: 16.0),
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        color: primaryColor,
-                        size: 22.0,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 400),
-                      child: discussion.when(
-                        data: (data) => Padding(
-                          padding:
-                              const EdgeInsets.only(left: 4.0, right: 16.0),
-                          child: AnimatedBuilder(
-                            animation: _controller,
-                            builder: (context, child) => AnimatedContainer(
-                              height: screenSize.height * .0575,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 4.0, horizontal: 8.0),
-                              duration: const Duration(milliseconds: 300),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: theme.foregroundColor.withOpacity(
-                                    _controller.offset > screenSize.height * .05
-                                        ? 1.0
-                                        : 0.0),
-                                borderRadius: BorderRadius.circular(12.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: accentColor.withOpacity(
-                                        _controller.offset >
-                                                screenSize.height * .05
-                                            ? 0.25
-                                            : 0.0),
-                                    blurRadius: 8.0,
-                                  )
-                                ],
-                              ),
-                              child: AnimatedDefaultTextStyle(
-                                duration: const Duration(milliseconds: 300),
-                                style: outfitStyle.copyWith(
-                                  color: _controller.offset >
-                                          screenSize.height * .05
-                                      ? primaryColor
-                                      : Colors.white,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                child: AutoSizeText(data.title, maxLines: 2),
-                              ),
+                          margin: const EdgeInsets.only(left: 16.0),
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: primaryColor,
+                              size: 22.0,
                             ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
                           ),
                         ),
-                        error: (error, stackTrace) => const Error1(),
-                        loading: () => const SizedBox(),
-                      )),
+                      ),
+                      Expanded(
+                        child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 400),
+                            child: discussion.when(
+                              data: (data) => Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 4.0, right: 16.0),
+                                child: AnimatedBuilder(
+                                  animation: _controller,
+                                  builder: (context, child) => AnimatedContainer(
+                                    height: screenSize.height * .0575,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0, horizontal: 8.0),
+                                    duration: const Duration(milliseconds: 300),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: theme.foregroundColor.withOpacity(
+                                          _controller.offset > screenSize.height * .05
+                                              ? 1.0
+                                              : 0.0),
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: accentColor.withOpacity(
+                                              _controller.offset >
+                                                      screenSize.height * .05
+                                                  ? 0.25
+                                                  : 0.0),
+                                          blurRadius: 8.0,
+                                        )
+                                      ],
+                                    ),
+                                    child: AnimatedDefaultTextStyle(
+                                      duration: const Duration(milliseconds: 300),
+                                      style: outfitStyle.copyWith(
+                                        color: _controller.offset >
+                                                screenSize.height * .05
+                                            ? primaryColor
+                                            : Colors.white,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      child: AutoSizeText(data.title, maxLines: 2),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              error: (error, stackTrace) => const Error1(),
+                              loading: () => const SizedBox(),
+                            )),
+                      ),
+                    ],
+                  ),
                 ),
+                Positioned(
+                  bottom: 16,
+                  left: 0,
+                  right: 0,
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 400),
+                    transitionBuilder: (child, animation) => ScaleTransition(
+                      scale: animation,
+                      child: FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      ),
+                    ),
+                    child: cachedDiscussion != null
+                        ? Pagination(
+                            callback: (index) => setState(() {
+                              page = index;
+                            }),
+                            length: cachedDiscussion!.lastVisiblePage,
+                          )
+                        : const SizedBox(),
+                  ),
+                )
               ],
             ),
           ),
-          Positioned(
-            bottom: 16,
-            left: 0,
-            right: 0,
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 400),
-              transitionBuilder: (child, animation) => ScaleTransition(
-                scale: animation,
-                child: FadeTransition(
-                  opacity: animation,
-                  child: child,
-                ),
-              ),
-              child: cachedDiscussion != null
-                  ? Pagination(
-                      callback: (index) => setState(() {
-                        page = index;
-                      }),
-                      length: cachedDiscussion!.lastVisiblePage,
-                    )
-                  : const SizedBox(),
-            ),
-          )
+          const MyBannerAd(
+              screenName: 'news'
+          ),
+
         ],
       ),
     );
@@ -262,12 +274,12 @@ class _DiscussionDetailsState extends ConsumerState<DiscussionDetails> {
                               ),
                             ),
                           )
-                        : CachedNetworkImage(
+                        : SafeCachedImage(
                             imageUrl: element.userIcon ?? '',
                             fit: BoxFit.cover,
                             width: screenSize.width * .15,
                             height: screenSize.width * .15,
-                            placeholder: (context, url) => const LoadingWidget(
+                            placeholder:const LoadingWidget(
                               color: primaryColor,
                             ),
                           ),
@@ -420,7 +432,7 @@ class _DiscussionDetailsState extends ConsumerState<DiscussionDetails> {
     Map<String, dynamic> json, {
     TextStyle style = outfitStyle,
   }) {
-    switch (json.keys.first) {
+    switch (json.keys.firstOrNull) {
       case 'text':
         final val = json.values.first as String;
 
@@ -480,7 +492,7 @@ class _DiscussionDetailsState extends ConsumerState<DiscussionDetails> {
                   (json.values.first as Map<String, dynamic>)['url'] as String),
               child: RichText(
                   text: _buildContentWidget(
-                json['url']['content'] as Map<String, dynamic>,
+                (json['url']['content'] as Map<String, dynamic>?)??{},
                 style: style.copyWith(
                   color: primaryColor,
                   decoration: TextDecoration.underline,
@@ -655,12 +667,12 @@ class _DiscussionDetailsState extends ConsumerState<DiscussionDetails> {
             alignment: Alignment.centerLeft,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: CachedNetworkImage(
+              child: SafeCachedImage(
                 imageUrl: json.values.first as String,
-                placeholder: (context, url) => const LoadingWidget(
+                placeholder:  const LoadingWidget(
                   color: primaryColor,
                 ),
-                errorWidget: (context, url, error) => Center(
+                errorWidget:Center(
                   child: Image.asset(
                     'assets/images/fail.png',
                     width: 40.0,

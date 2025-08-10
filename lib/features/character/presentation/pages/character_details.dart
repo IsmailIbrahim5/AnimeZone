@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:animezone/core/providers/providers.dart';
 import 'package:animezone/core/widgets/background.dart';
+import 'package:animezone/core/widgets/banner_ad.dart';
 import 'package:animezone/core/widgets/loading_widget.dart';
 import 'package:animezone/features/element/presentation/pages/element_details.dart';
 import 'package:animezone/core/widgets/full_image_view.dart';
@@ -15,6 +16,7 @@ import 'package:intl/intl.dart';
 import '../../../../config/routes/app_route.dart';
 import '../../../../config/styles/styles.dart';
 import '../../../../core/widgets/error.dart';
+import '../../../../core/widgets/safe_cached_image.dart';
 import '../../../element/data/repository/element_repository.dart';
 import '../../../element/domain/models/anime.dart';
 import '../../domain/models/character.dart';
@@ -36,54 +38,63 @@ class _CharacterDetailsState extends ConsumerState<CharacterDetails> {
     final theme = ref.watch(applicationThemeProvider);
     final screenSize = MediaQuery.sizeOf(context);
     return Material(
-      child: Stack(
+      child: Column(
         children: [
-          const Background(),
-          Positioned.fill(
-            child: widget.character == null
-                ? Builder(
-                    builder: (context) {
-                      final character =
-                          ref.watch(characterProvider(id: widget.characterId));
-                      return character.when(
-                        data: (data) => _characterView(data),
-                        error: (error, stackTrace) => const Error1(),
-                        loading: () => const LoadingWidget(),
-                      );
-                    },
-                  )
-                : _characterView(widget.character!),
-          ),
-          Positioned(
-            top: 32.0,
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () => Navigator.of(context).pop(),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: theme.foregroundColor,
-                  borderRadius: BorderRadius.circular(18.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: accentColor.withOpacity(.25),
-                      blurRadius: 8.0,
-                    )
-                  ],
+          Expanded(
+            child: Stack(
+              children: [
+                const Background(),
+                Positioned.fill(
+                  child: widget.character == null
+                      ? Builder(
+                          builder: (context) {
+                            final character =
+                                ref.watch(characterProvider(id: widget.characterId));
+                            return character.when(
+                              data: (data) => _characterView(data),
+                              error: (error, stackTrace) => const Error1(),
+                              loading: () => const LoadingWidget(),
+                            );
+                          },
+                        )
+                      : _characterView(widget.character!),
                 ),
-                margin: const EdgeInsets.only(left: 16.0),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: primaryColor,
-                    size: 22.0,
+                Positioned(
+                  top: 32.0,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: theme.foregroundColor,
+                        borderRadius: BorderRadius.circular(18.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: accentColor.withOpacity(.25),
+                            blurRadius: 8.0,
+                          )
+                        ],
+                      ),
+                      margin: const EdgeInsets.only(left: 16.0),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          color: primaryColor,
+                          size: 22.0,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
                 ),
-              ),
+              ],
             ),
           ),
+          const MyBannerAd(
+            screenName: 'character',
+          )
         ],
       ),
     );
@@ -220,7 +231,7 @@ class _CharacterDetailsState extends ConsumerState<CharacterDetails> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12.0)),
                                   clipBehavior: Clip.antiAlias,
-                                  child: CachedNetworkImage(
+                                  child: SafeCachedImage(
                                     imageUrl: character.anime![index]['anime']
                                                 ['images']['jpg']['image_url']
                                             as String? ??
@@ -282,7 +293,7 @@ class _CharacterDetailsState extends ConsumerState<CharacterDetails> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12.0)),
                                 clipBehavior: Clip.antiAlias,
-                                child: CachedNetworkImage(
+                                child: SafeCachedImage(
                                   imageUrl: character.manga![index]['manga']
                                               ['images']['jpg']['image_url']
                                           as String? ??
@@ -346,10 +357,10 @@ class _CharacterDetailsState extends ConsumerState<CharacterDetails> {
                                         borderRadius: BorderRadius.circular(12.0),
                                       ),
                                       clipBehavior: Clip.antiAlias,
-                                      child: CachedNetworkImage(
+                                      child: SafeCachedImage(
                                         imageUrl: character.voices![index]['person']['images']['jpg']['image_url'] as String? ?? '',
                                         fit: BoxFit.cover,
-                                        placeholder: (context, url) => const Stack(
+                                        placeholder:  const Stack(
                                           children: [
                                             Background(),
                                             LoadingWidget()
@@ -431,9 +442,9 @@ class _CharacterDetailsState extends ConsumerState<CharacterDetails> {
                                           )
                                         ]),
                                     clipBehavior: Clip.antiAlias,
-                                    child: CachedNetworkImage(
+                                    child: SafeCachedImage(
                                       imageUrl: data[index % data.length].imageUrl ?? '',
-                                      placeholder:(context, url) => const  Stack(
+                                      placeholder:const  Stack(
                                         alignment: Alignment.center,
                                         children: [
                                            Background(),
@@ -480,7 +491,7 @@ class _CharacterDetailsState extends ConsumerState<CharacterDetails> {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                CachedNetworkImage(
+                SafeCachedImage(
                   imageUrl: anime.image.imageUrl ?? '',
                   fit: BoxFit.cover,
                 ),

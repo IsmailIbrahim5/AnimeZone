@@ -27,6 +27,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/widgets/banner_ad.dart';
+import '../../../../core/widgets/safe_cached_image.dart';
 import '../../domain/models/manga.dart';
 import '../../domain/models/anime.dart';
 import '../widgets/characters_page.dart';
@@ -102,113 +104,127 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                 ? _drawerController.reverse()
                 : null,
             child: child!),
-        child: Stack(
+        child: Column(
           children: [
-            _buildWallpaper(element),
-            Positioned.fill(
-              child: SingleChildScrollView(
-                controller: _mainController,
-                padding: EdgeInsets.only(bottom: screenSize.height * .1),
-                child: Column(
-                  children: [
-                    _buildInfo(element),
-                    Container(
-                      color: theme.backgroundColor,
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: Column(
-                        children: [
-                          TabBar2(
-                            callback: (page) => setState(() {
-                              next = page < this.page;
-                              this.page = page;
-                            }),
-                            tabs: [
-                              AppLocalizations.of(context)!.overview,
-                              AppLocalizations.of(context)!.reviews,
-                              if (element is Anime) AppLocalizations.of(context)!.episodes,
-                              AppLocalizations.of(context)!.media,
-                              AppLocalizations.of(context)!.characters,
-                              AppLocalizations.of(context)!.recommendations,
-                              AppLocalizations.of(context)!.relations,
-                              AppLocalizations.of(context)!.news,
-                              AppLocalizations.of(context)!.forums,
-                            ],
-                          ),
-                          CrossFadeSwitcher(
-                            next: next,
-                            factor: .5,
-                            child: element is Anime
-                                ? switch (page) {
-                                    0 => OverviewPage(element: element),
-                                    1 => ReviewsPage(
-                                        element: element,
-                                      ),
-                                    2 => EpisodesPage(
-                                        animeId: element.malId,
-                                      ),
-                                    3 => MediaPage(
-                                        id: element.malId,
-                                        elementType: ElementType.anime,
-                                      ),
-                                    4 => CharactersPage(
-                                        id: element.malId,
-                                        elementType: ElementType.anime,
-                                      ),
-                                    5 => RecommendationsPage(element: element,),
-                                    6 => RelationsPage(
-                                        id: element.malId,
-                                        elementType: ElementType.anime,
-                                      ),
-                                    7 => NewsPage(
-                                        id: element.malId,
-                                        elementType: ElementType.anime,
-                                      ),
-                                    8 => ForumsPage(
-                                        id: element.malId,
-                                        elementType: ElementType.anime,
-                                      ),
-                                    _ => const SizedBox(),
-                                  }
-                                : switch (page) {
-                                    0 => OverviewPage(element: element),
-                                    1 => ReviewsPage(
-                                        element: element,
-                                      ),
-                                    2 => MediaPage(
-                                        id: element.malId,
-                                        elementType: ElementType.manga,
-                                      ),
-                                    3 => CharactersPage(
-                                        id: element.malId,
-                                        elementType: ElementType.manga,
-                                      ),
-                              4 => RecommendationsPage(element: element,),
+            Expanded(
+              
+              child: SizedBox.expand(
 
-                              5 => RelationsPage(
-                                        id: element.malId,
-                                        elementType: ElementType.manga,
-                                      ),
-                                    6 => NewsPage(
-                                        id: element.malId,
-                                        elementType: ElementType.manga,
-                                      ),
-                                    7 => ForumsPage(
-                                        id: element.malId,
-                                        elementType: ElementType.manga,
-                                      ),
-                                    _ => const SizedBox(),
-                                  },
-                          )
-                        ],
+                child: Stack(
+                  children: [
+                    _buildWallpaper(element),
+                    Positioned.fill(
+                      child: SingleChildScrollView(
+                        controller: _mainController,
+                        padding: EdgeInsets.only(bottom: screenSize.height * .1),
+                        child: Column(
+                          children: [
+                            _buildInfo(element),
+                            Container(
+                              color: theme.backgroundColor,
+                              padding: const EdgeInsets.symmetric(vertical: 16.0),
+                              child: Column(
+                                children: [
+                                  TabBar2(
+                                    callback: (page) => setState(() {
+                                      next = page < this.page;
+                                      this.page = page;
+                                    }),
+                                    tabs: [
+                                      AppLocalizations.of(context)!.overview,
+                                      AppLocalizations.of(context)!.reviews,
+                                      if (element is Anime) AppLocalizations.of(context)!.episodes,
+                                      AppLocalizations.of(context)!.media,
+                                      AppLocalizations.of(context)!.characters,
+                                      AppLocalizations.of(context)!.recommendations,
+                                      AppLocalizations.of(context)!.relations,
+                                      AppLocalizations.of(context)!.news,
+                                      AppLocalizations.of(context)!.forums,
+                                    ],
+                                  ),
+                                  CrossFadeSwitcher(
+                                    next: next,
+                                    factor: .5,
+                                    child: element is Anime
+                                        ? switch (page) {
+                                            0 => OverviewPage(element: element),
+                                            1 => ReviewsPage(
+                                                element: element,
+                                              ),
+                                            2 => EpisodesPage(
+                                                animeId: element.malId,
+                                              anime: element,
+                                              ),
+                                            3 => MediaPage(
+                                                id: element.malId,
+                                                elementType: ElementType.anime,
+                                              ),
+                                            4 => CharactersPage(
+                                                id: element.malId,
+                                                elementType: ElementType.anime,
+                                              ),
+                                            5 => RecommendationsPage(element: element,),
+                                            6 => RelationsPage(
+                                                id: element.malId,
+                                                elementType: ElementType.anime,
+                                              ),
+                                            7 => NewsPage(
+                                                id: element.malId,
+                                                elementType: ElementType.anime,
+                                              ),
+                                            8 => ForumsPage(
+                                                id: element.malId,
+                                                elementType: ElementType.anime,
+                                              ),
+                                            _ => const SizedBox(),
+                                          }
+                                        : switch (page) {
+                                            0 => OverviewPage(element: element),
+                                            1 => ReviewsPage(
+                                                element: element,
+                                              ),
+                                            2 => MediaPage(
+                                                id: element.malId,
+                                                elementType: ElementType.manga,
+                                              ),
+                                            3 => CharactersPage(
+                                                id: element.malId,
+                                                elementType: ElementType.manga,
+                                              ),
+                                      4 => RecommendationsPage(element: element,),
+                
+                                      5 => RelationsPage(
+                                                id: element.malId,
+                                                elementType: ElementType.manga,
+                                              ),
+                                            6 => NewsPage(
+                                                id: element.malId,
+                                                elementType: ElementType.manga,
+                                              ),
+                                            7 => ForumsPage(
+                                                id: element.malId,
+                                                elementType: ElementType.manga,
+                                              ),
+                                            _ => const SizedBox(),
+                                          },
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    )
+                    ),
+                    if (element is Anime) _buildFloatingActionButton(element),
+                    _buildAppBar(element),
+                    _buildBottomBar(element),
                   ],
                 ),
               ),
             ),
-            if (element is Anime) _buildFloatingActionButton(element),
-            _buildAppBar(element),
-            _buildBottomBar(element)
+            const MyBannerAd(
+                screenName: 'full_details'
+            )
           ],
         ),
       );
@@ -226,7 +242,7 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
             children: [
               const Background(),
               wallpaper.when(
-                data: (data) => CachedNetworkImage(
+                data: (data) => SafeCachedImage(
                   key: ValueKey('image_$data'),
                   imageUrl: data,
                   imageBuilder: (context, imageProvider) => Stack(
@@ -242,13 +258,13 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                       )
                     ],
                   ),
-                  placeholder: (context, url) => const LoadingWidget(),
+                  placeholder: const LoadingWidget(),
                 ),
                 error: (error, stackTrace) {
                   final pictures = ref.watch(elementPicturesProvider(
                       id:  element.malId,
                       elementType: ElementType.anime));
-                  return pictures.when(data: (data) =>CachedNetworkImage(
+                  return pictures.when(data: (data) =>SafeCachedImage(
                     imageUrl: data.first.largeImageUrl??data.first.imageUrl??'',
                     imageBuilder:
                         (context, imageProvider) => Stack(
@@ -265,7 +281,7 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                         )
                       ],
                     ),
-                    placeholder: (context, url) =>
+                    placeholder:
                     const LoadingWidget(
                       color: Colors.white,
                     ),
@@ -300,10 +316,10 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                       boxShadow: const [
                         BoxShadow(color: Colors.black26, blurRadius: 8.0)
                       ]),
-                  child: CachedNetworkImage(
+                  child: SafeCachedImage(
                     imageUrl: element.image.largeImageUrl ?? '',
                     fit: BoxFit.cover,
-                    placeholder: (context, url) => const LoadingWidget(
+                    placeholder: const LoadingWidget(
                       color: primaryColor,
                     ),
                   ),
@@ -655,7 +671,7 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
         ),
       );
 
-  Widget _buildFloatingActionButton(Anime anime) => Positioned(
+  Widget _buildFloatingActionButton(Anime anime) => anime.trailer != null ?Positioned(
         bottom: 16.0,
         right: 16.0,
         child: GestureDetector(
@@ -667,7 +683,7 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                   begin: const Offset(0.0, 1.0),
                   end: Offset.zero,
                 )),
-                child: TrailerPage(id: anime.trailer ?? '9bZkp7q19f0'),
+                child: TrailerPage(id: anime.trailer!),
               ),
             ));
           },
@@ -733,7 +749,7 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
             ),
           ),
         ),
-      );
+      ) : const SizedBox();
 
   Widget _buildBottomBar(elem.Element element) => AnimatedBuilder(
         animation: _drawerAnimation,
@@ -833,13 +849,12 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                                               child: Row(
                                                 children: [
                                                   Expanded(
-                                                      child: CachedNetworkImage(
+                                                      child: SafeCachedImage(
                                                     imageUrl: element.image
                                                             .largeImageUrl ??
                                                         '',
                                                     fit: BoxFit.cover,
                                                     placeholder:
-                                                        (context, url) =>
                                                             const LoadingWidget(
                                                       color: primaryColor,
                                                     ),
@@ -1039,14 +1054,13 @@ class _ElementDetailsState extends ConsumerState<ElementDetails>
                                                                     return image
                                                                         .when(
                                                                       data: (data) =>
-                                                                          CachedNetworkImage(
+                                                                          SafeCachedImage(
                                                                         imageUrl:
                                                                             data.first.largeImageUrl ??
                                                                                 '',
                                                                         fit: BoxFit
                                                                             .cover,
                                                                         placeholder:
-                                                                            (context, url) =>
                                                                                 const LoadingWidget(
                                                                           color:
                                                                               primaryColor,

@@ -85,7 +85,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
 
 
   void _showOverlay(){
-    final SequenceAnimationController controller = SequenceAnimationController();
     late final OverlayEntry overlayEntry;
     overlayEntry = OverlayEntry(builder: (context) => NotificationOverlay(overlayEntry: overlayEntry));
     Overlay.of(context).insert(overlayEntry);

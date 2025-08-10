@@ -132,6 +132,14 @@ Future<Map<String,List<Video>>> animeVideos(
 }
 
 @Riverpod(keepAlive: true)
+Future<List<Map<String,dynamic>>> animeStreaming(
+    Ref ref, {
+      required int id
+    }) {
+  return ref.read(elementRepositoryProvider).getAnimeStreaming(id);
+}
+
+@Riverpod(keepAlive: true)
 Future<List<Map<String,dynamic>>> elementCharacters(
     ElementCharactersRef ref, {
       required int id,

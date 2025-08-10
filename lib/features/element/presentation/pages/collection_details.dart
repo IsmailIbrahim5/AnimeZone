@@ -6,6 +6,7 @@ import 'package:animezone/features/element/presentation/providers/providers.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/widgets/banner_ad.dart';
 import '../../../../core/widgets/error.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../widgets/element_widget.dart';
@@ -230,7 +231,11 @@ class _CollectionDetailsState extends ConsumerState<CollectionDetails> {
                 )
               ],
             ),
-          )
+          ),
+          const MyBannerAd(
+            screenName: 'category'
+          ),
+
         ],
       ),
     );

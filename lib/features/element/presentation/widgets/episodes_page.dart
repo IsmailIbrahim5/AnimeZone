@@ -7,17 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/providers/providers.dart';
+import '../../domain/models/anime.dart';
 import '../providers/providers.dart';
 
 class EpisodesPage extends ConsumerWidget {
   final int animeId;
-  const EpisodesPage({super.key, required this.animeId});
+  final Anime anime;
+  const EpisodesPage({super.key, required this.animeId, required this.anime});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final episodes = ref.watch(animeEpisodesProvider(id: animeId));
     final screenSize = MediaQuery.sizeOf(context);
-    final theme = ref.watch(applicationThemeProvider);
     return episodes.when(
       data: (data) {
         data.sort(
@@ -28,7 +29,7 @@ class EpisodesPage extends ConsumerWidget {
             : SingleChildScrollView(
                 child: Column(
                   children: List.generate(data.length,
-                      (index) => EpisodeWidget2(episode: data[index])),
+                      (index) => EpisodeWidget2(episode: data[index], anime:anime ,)),
                 ),
               );
       },

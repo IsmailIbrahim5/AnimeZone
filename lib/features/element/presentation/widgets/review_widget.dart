@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/providers/providers.dart';
+import '../../../../core/widgets/safe_cached_image.dart';
 import '../../domain/models/review.dart';
 
 class ReviewWidget extends ConsumerWidget {
@@ -60,7 +61,7 @@ class ReviewWidget extends ConsumerWidget {
                                               height: 16.0,
                                               decoration: const BoxDecoration(shape: BoxShape.circle),
                                               clipBehavior: Clip.antiAlias,
-                                              child: CachedNetworkImage(
+                                              child: SafeCachedImage(
                                                   imageUrl: review.user['images']['jpg']['image_url'] as String? ?? '',
                                                 fit: BoxFit.cover,
                                               ),
@@ -161,7 +162,7 @@ class ReviewWidget extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   clipBehavior: Clip.antiAlias,
-                  child: CachedNetworkImage(
+                  child: SafeCachedImage(
                     imageUrl: review.entry?['images']['jpg']['image_url'] as String? ??'',
 
                     fit: BoxFit.cover,

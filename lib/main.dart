@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,7 +27,7 @@ void main() async {
       statusBarColor: Colors.transparent,
     ),
   );
-
+  await MobileAds.instance.initialize();
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   Database database =
@@ -39,12 +40,18 @@ void main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: false);
     return true;
   };
 
   if(sharedPreferences.getString('locale') == null){
-    sharedPreferences.setString('locale', Platform.localeName);
+    if(AppLocalizations.supportedLocales.any((element) => element.languageCode == Platform.localeName.substring(0,2),)) {
+      sharedPreferences.setString(
+          'locale', Platform.localeName.substring(0, 2));
+    }else{
+      sharedPreferences.setString(
+          'locale', 'en');
+    }
   }
   runApp(
 
